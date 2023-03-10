@@ -125,22 +125,10 @@ class _AvailabilityState extends State<Availability> {
                   onTap: () {
                     if (selectedIndex.contains(currentIndex)) {
                       selectedIndex.remove(currentIndex);
-                      // selectedIndex.remove(currentIndex1);
-                      // selectedIndex.remove(currentIndex2);
-                      // selectedIndex.remove(currentIndex3);
-                      // selectedIndex.remove(currentIndex4);
-                      // selectedIndex.remove(currentIndex5);
-                      // selectedIndex.remove(currentIndex6);
-                      // selectedIndex.remove(currentIndex7);
+
                     } else {
                       selectedIndex.add(currentIndex);
-                      // selectedIndex.add(currentIndex1);
-                      // selectedIndex.add(currentIndex2);
-                      // selectedIndex.add(currentIndex3);
-                      // selectedIndex.add(currentIndex4);
-                      // selectedIndex.add(currentIndex5);
-                      // selectedIndex.add(currentIndex6);
-                      // selectedIndex.add(currentIndex7);
+
                     }
                     setState(() {});
                   },
