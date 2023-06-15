@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fixerking/screen/TicketPage.dart';
 import 'package:fixerking/screen/openImage.dart';
 import 'package:fixerking/token/app_token_data.dart';
 import 'package:fixerking/utils/colors.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:sizer/sizer.dart';
 
 import '../api/api_path.dart';
 import '../modal/New models/GetChatModel.dart';
@@ -19,9 +21,11 @@ class ChatPage extends StatefulWidget {
   // final SharedPreferences prefs;
   String? bookingId;
   // final String? title;
+  bool? fromPost;
+  String? userid;
 
   final providerName;
-  ChatPage({this.providerName,this.bookingId});
+  ChatPage({this.providerName,this.bookingId,this.fromPost=false,this.userid});
   @override
   ChatPageState createState() {
     return new ChatPageState();
@@ -47,8 +51,9 @@ class ChatPageState extends State<ChatPage> {
   }
   String textValue = "";
   File? imageFiles;
+
   Future getMessage() async {
-    print("booking id now ${widget.bookingId}");
+    var userId = await MyToken.getUserID();
     var headers = {
       'Cookie': 'ci_session=132b223a903b145b8f1056a17a0c9ef325151d5f'
     };
@@ -57,7 +62,14 @@ class ChatPageState extends State<ChatPage> {
     request.fields.addAll({
       'booking_id': '${widget.bookingId}'
     });
-    print("ollolloll ${Apipath.BASH_URL}get_chat    and ${request.fields}");
+
+    if(widget.fromPost == true) {
+      request.fields.addAll({
+        "type": "2",
+        "vendor_id": "${userId}",
+        "user_id": "${widget.userid}"
+      });
+    }
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -87,7 +99,6 @@ class ChatPageState extends State<ChatPage> {
     var headers = {
       'Cookie': 'ci_session=cb5fe5415a2e7a3e28f499c842c30404bfbc8a99'
     };
-    print("para ${userId} and vendor and ${textController.text.toString()} and ${type} and ${widget.bookingId}");
     var request = http.MultipartRequest(
         'POST', Uri.parse('${Apipath.BASH_URL}send_message'));
     request.fields.addAll({
@@ -97,6 +108,13 @@ class ChatPageState extends State<ChatPage> {
       'message_type': '${type}',
       'booking_id': '${widget.bookingId}',
     });
+    if(widget.fromPost == true) {
+      request.fields.addAll({
+        "type": "2",
+        "vendor_id": "${userId}",
+        "user_id": "${widget.userid}"
+      });
+    }
     imageFiles == null ? null : request.files.add(
         await http.MultipartFile.fromPath(
             'chat', '${imageFiles!.path.toString()}'));
@@ -311,6 +329,16 @@ class ChatPageState extends State<ChatPage> {
                   bottomRight: Radius.circular(20)
               )
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => TicketPage()));
+                  },
+                  child: Icon(Icons.report_gmailerrorred,color: Colors.white,)),
+            ),
+          ],
           backgroundColor: AppColor.PrimaryDark,
           elevation: 0,
           title: Text(

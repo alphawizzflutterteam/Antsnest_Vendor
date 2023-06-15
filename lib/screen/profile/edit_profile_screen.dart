@@ -62,6 +62,26 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   TextEditingController whyJoinController = TextEditingController();
   TextEditingController facebookController = TextEditingController();
   TextEditingController serviceInfoController = TextEditingController();
+
+
+  /// Payment purpose controllers
+
+  TextEditingController payNameController = TextEditingController();
+  TextEditingController accController = TextEditingController();
+  TextEditingController bankNameController = TextEditingController();
+  TextEditingController bankAddressController = TextEditingController();
+  TextEditingController ifscController = TextEditingController();
+  TextEditingController panNoController = TextEditingController();
+  TextEditingController sortCodeController = TextEditingController();
+  TextEditingController routingController = TextEditingController();
+  TextEditingController paymailController = TextEditingController();
+  TextEditingController payContactController = TextEditingController();
+  TextEditingController razorpayController = TextEditingController();
+
+  String? paymentMode,paying;
+
+
+
   String? selectedCategory;
   String? selectedSubCategory;
   TextEditingController amountController = TextEditingController();
@@ -447,6 +467,19 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       "country_code":"+${phoneCode}",
       "amount":amountController.text,
       "language":selectedLanguage.toString(),
+      "payName":payNameController.text,
+      "acc_No":accController.text,
+      "bank_name":bankNameController.text,
+      "bank_address":bankAddressController.text,
+      "ifsc":ifscController.text,
+      "pan_no":panNoController.text,
+      "sort_code":sortCodeController.text,
+      "routing_code":routingController.text,
+      "payEmail":paymailController.text,
+      "payContact":payContactController.text,
+      "payMode":paymentMode.toString(),
+      "paying":paying.toString(),
+      "razorpay_id":razorpayController.text
         };
     print(tojson());
     var data = await MultipartHelper.requestOneImg(tojson(),
@@ -461,7 +494,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   }
 
   void setFromField() async {
-    phoneCode = widget.response.user!.country_code.toString();
+    phoneCode = widget.response.user!.countryCode.toString();
     nameController.text = widget.response.user!.fname.toString();
     userLastNameController.text = widget.response.user!.lname.toString();
     emailController.text = widget.response.user!.email.toString();
@@ -470,7 +503,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     addressController.text = widget.response.user!.address.toString();
     selectedCountry = widget.response.user!.countryId.toString();
     selectedState = widget.response.user!.stateId.toString();
-    cityName = widget.response.user!.cityId.toString();
+    SelectedSignleCity = widget.response.user!.cityId.toString();
     portfolioController.text = widget.response.user!.jsonData!.website.toString();
     twitterController.text = widget.response.user!.jsonData!.tLink.toString();
     instagramController.text = widget.response.user!.jsonData!.iLink.toString();
@@ -488,6 +521,23 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     selectedDayHour = widget.response.user!.jsonData!.hrsDay.toString();
     selectedLanguage = widget.response.user!.jsonData!.language.toString();
     selectedTravel = widget.response.user!.jsonData!.canTravel.toString();
+
+    /// payment purpose section here
+
+    payNameController.text = widget.response.user!.paymentDetails!.accountHolderName.toString();
+    accController.text = widget.response.user!.paymentDetails!.accNo.toString();
+    bankNameController.text = widget.response.user!.paymentDetails!.bankName.toString();
+    bankAddressController.text = widget.response.user!.paymentDetails!.bankAddr.toString();
+    ifscController.text = widget.response.user!.paymentDetails!.ifscCode.toString();
+    panNoController.text = widget.response.user!.paymentDetails!.pancardNo.toString();
+    sortCodeController.text = widget.response.user!.paymentDetails!.sortCode.toString();
+    routingController.text = widget.response.user!.paymentDetails!.routingNumber.toString();
+    paymailController.text = widget.response.user!.paymentDetails!.paypalEmailId.toString();
+    payContactController.text = widget.response.user!.paymentDetails!.contactNumber.toString();
+    razorpayController.text = widget.response.user!.paymentDetails!.razorpayId.toString();
+    paymentMode = widget.response.user!.paymentDetails!.mode.toString();
+    paying = widget.response.user!.paymentDetails!.purpose.toString();
+
 
     setState(() {});
    // print("checking birthday ${widget.response.user!.cityId.toString()} and ${widget.response.user!.stateId.toString()}");
@@ -932,404 +982,504 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                 SizedBox(
                   height: 15,
                 ),
-                //STATE
-                // Container(
-                //     width: 69.99.w,
-                //     // height: 7.46.h,
-                //     decoration: boxDecoration(
-                //       radius: 10.0,
-                //     ),
-                //     child: FutureBuilder(
-                //         future: getState(),
-                //         builder: (BuildContext context,
-                //             AsyncSnapshot snapshot) {
-                //           if (snapshot.hasData) {
-                //             return DropdownButtonHideUnderline(
-                //               child: DropdownButton2(
-                //                 isExpanded: true,
-                //                 hint: Row(
-                //                   children: [
-                //                     // Image.asset(
-                //                     //   city,
-                //                     //   width: 6.04.w,
-                //                     //   height: 5.04.w,
-                //                     //   fit: BoxFit.fill,
-                //                     //   color: AppColor.PrimaryDark,
-                //                     // ),
-                //                     // SizedBox(
-                //                     //   width: 4,
-                //                     // ),
-                //                     Expanded(
-                //                       child: Text(
-                //                         '$stateName',
-                //                         style: TextStyle(
-                //                           fontSize: 14,
-                //                           fontWeight: FontWeight.normal,
-                //                         ),
-                //                         overflow: TextOverflow.ellipsis,
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //                 items: stateList
-                //                     .map((item) =>
-                //                     DropdownMenuItem<String>(
-                //                       value: item.id,
-                //                       child: Text(
-                //                         item.name!,
-                //                         style: const TextStyle(
-                //                           fontSize: 14,
-                //                           fontWeight:
-                //                           FontWeight.bold,
-                //                           color: Colors.black,
-                //                         ),
-                //                         overflow:
-                //                         TextOverflow.ellipsis,
-                //                       ),
-                //                     ))
-                //                     .toList(),
-                //                 value: selectedState,
-                //                 onChanged: (value) {
-                //                   setState(() {
-                //                     selectedState = value as String;
-                //
-                //                     getCities();
-                //                   });
-                //                 },
-                //                 icon: const Icon(
-                //                   Icons.arrow_forward_ios_outlined,
-                //                   color: AppColor.PrimaryDark,
-                //                 ),
-                //                 iconSize: 14,
-                //                 buttonHeight: 50,
-                //                 buttonWidth: 160,
-                //                 buttonPadding: const EdgeInsets.only(
-                //                     left: 14, right: 14),
-                //                 buttonDecoration: BoxDecoration(
-                //                   borderRadius:
-                //                   BorderRadius.circular(14),
-                //                   color: AppColor().colorEdit(),
-                //                 ),
-                //                 buttonElevation: 0,
-                //                 itemHeight: 40,
-                //                 itemPadding: const EdgeInsets.only(
-                //                     left: 14, right: 14),
-                //                 dropdownMaxHeight: 300,
-                //                 dropdownPadding: null,
-                //                 dropdownDecoration: BoxDecoration(
-                //                   borderRadius:
-                //                   BorderRadius.circular(14),
-                //                 ),
-                //                 dropdownElevation: 8,
-                //                 scrollbarRadius:
-                //                 const Radius.circular(40),
-                //                 scrollbarThickness: 6,
-                //                 scrollbarAlwaysShow: true,
-                //               ),
-                //             );
-                //           } else if (snapshot.hasError) {
-                //             return Icon(Icons.error_outline);
-                //           } else {
-                //             return Center(
-                //                 child: CircularProgressIndicator());
-                //           }
-                //         })),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // CITY
-                // InkWell(
-                //   onTap: (){
-                //     _showMultiSelect();
-                //   },
-                //   child: Container(
-                //       width: 70.99.w,
-                //       height: 7.26.h,
-                //       decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(10),
-                //           color: AppColor().colorEdit()
-                //       ),
-                //       // boxDecoration(
-                //       //   radius: 10.0,
-                //       // ),
-                //       child: _selectedItems.isEmpty ?
-                //       Padding(
-                //         padding: const EdgeInsets.only(left: 10.0, right: 10),
-                //         child: Row(
-                //           children: [
-                //             Image.asset(
-                //               city,
-                //               width: 6.04.w,
-                //               height: 5.04.w,
-                //               fit: BoxFit.fill,
-                //               color: AppColor.PrimaryDark,
-                //             ),
-                //             Padding(
-                //               padding: EdgeInsets.only(left: 8),
-                //               child: Text(
-                //                 'Select Multiple Cities',
-                //                 style: TextStyle(
-                //                   fontSize: 14,
-                //                   color: Colors.black54,
-                //                   fontWeight: FontWeight.normal,
-                //                 ),
-                //                 overflow: TextOverflow.ellipsis,
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       )
-                //           :  Wrap(
-                //         children: _selectedItems
-                //             .map((item){
-                //           print("okok ${item.id}");
-                //           return Padding(
-                //             padding: const EdgeInsets.only(left: 8.0, right: 8),
-                //             child: Chip(
-                //               label:
-                //               Text(
-                //                   "${item.name}"
-                //                 //item.name
-                //               ),
-                //             ),
-                //           );
-                //         })
-                //             .toList(),
-                //       )
-                //     // FutureBuilder(
-                //     //     future: getCities(),
-                //     //     builder: (BuildContext context,
-                //     //         AsyncSnapshot snapshot) {
-                //     //       if (snapshot.hasData) {
-                //     //         return DropdownButtonHideUnderline(
-                //     //           child: DropdownButton2(
-                //     //             isExpanded: true,
-                //     //             hint: Row(
-                //     //               children: [
-                //     //                 Image.asset(
-                //     //                   city,
-                //     //                   width: 6.04.w,
-                //     //                   height: 5.04.w,
-                //     //                   fit: BoxFit.fill,
-                //     //                   color: AppColor.PrimaryDark,
-                //     //                 ),
-                //     //                 SizedBox(
-                //     //                   width: 4,
-                //     //                 ),
-                //     //                 Expanded(
-                //     //                   child: Text(
-                //     //                     'Select Multiple Cities',
-                //     //                     style: TextStyle(
-                //     //                       fontSize: 14,
-                //     //                       fontWeight: FontWeight.normal,
-                //     //                     ),
-                //     //                     overflow: TextOverflow.ellipsis,
-                //     //                   ),
-                //     //                 ),
-                //     //               ],
-                //     //             ),
-                //     //             items: cityList.map((item) {
-                //     //               return DropdownMenuItem<String>(
-                //     //                 value: item.id,
-                //     //                 enabled: false,
-                //     //                 child: StatefulBuilder(
-                //     //                   builder: (context, menuSetState) {
-                //     //                     final _isSelected =
-                //     //                         selectedCities
-                //     //                             .contains(item);
-                //     //                     print("SLECTED CITY");
-                //     //                     return InkWell(
-                //     //                       onTap: () {
-                //     //                         _isSelected
-                //     //                             ? selectedCities
-                //     //                                 .remove(item.id)
-                //     //                             : selectedCities
-                //     //                                 .add(item.id!);
-                //     //                         setState(() {});
-                //     //                         menuSetState(() {});
-                //     //                       },
-                //     //                       child: Container(
-                //     //                         height: double.infinity,
-                //     //                         padding: const EdgeInsets
-                //     //                                 .symmetric(
-                //     //                             horizontal: 16.0),
-                //     //                         child: Row(
-                //     //                           children: [
-                //     //                             _isSelected
-                //     //                                 ? const Icon(Icons
-                //     //                                     .check_box_outlined)
-                //     //                                 : const Icon(Icons
-                //     //                                     .check_box_outline_blank),
-                //     //                             const SizedBox(
-                //     //                                 width: 16),
-                //     //                             Text(
-                //     //                               item.name!,
-                //     //                               style:
-                //     //                                   const TextStyle(
-                //     //                                 fontSize: 14,
-                //     //                               ),
-                //     //                             ),
-                //     //                           ],
-                //     //                         ),
-                //     //                       ),
-                //     //                     );
-                //     //                   },
-                //     //                 ),
-                //     //               );
-                //     //             }).toList(),
-                //     //             //Use last selected item as the current value so if we've limited menu height, it scroll to last item.
-                //     //             value: selectedCities.isEmpty
-                //     //                 ? null
-                //     //                 : selectedCities.last,
-                //     //             onChanged: (value) {},
-                //     //             buttonHeight: 50,
-                //     //             buttonWidth: 160,
-                //     //             buttonPadding: const EdgeInsets.only(
-                //     //                 left: 14, right: 14),
-                //     //             buttonDecoration: BoxDecoration(
-                //     //               borderRadius:
-                //     //                   BorderRadius.circular(14),
-                //     //               color: Color(0xffF9F9F9),
-                //     //             ),
-                //     //             buttonElevation: 0,
-                //     //             itemHeight: 40,
-                //     //             itemPadding: const EdgeInsets.only(
-                //     //                 left: 14, right: 14),
-                //     //             dropdownMaxHeight: 300,
-                //     //             dropdownPadding: null,
-                //     //             dropdownDecoration: BoxDecoration(
-                //     //               borderRadius:
-                //     //                   BorderRadius.circular(14),
-                //     //             ),
-                //     //             dropdownElevation: 8,
-                //     //             scrollbarRadius:
-                //     //                 const Radius.circular(40),
-                //     //             scrollbarThickness: 6,
-                //     //             scrollbarAlwaysShow: true,
-                //     //             selectedItemBuilder: (context) {
-                //     //               return cityList.map(
-                //     //                 (item) {
-                //     //                   return Container(
-                //     //                     // alignment: AlignmentDirectional.center,
-                //     //                     padding:
-                //     //                         const EdgeInsets.symmetric(
-                //     //                             horizontal: 16.0),
-                //     //                     child: Text(
-                //     //                       selectedCities.join(','),
-                //     //                       style: const TextStyle(
-                //     //                         fontSize: 14,
-                //     //                         overflow:
-                //     //                             TextOverflow.ellipsis,
-                //     //                       ),
-                //     //                       maxLines: 1,
-                //     //                     ),
-                //     //                   );
-                //     //                 },
-                //     //               ).toList();
-                //     //             },
-                //     //           ),
-                //     //         );
-                //     //       } else if (snapshot.hasError) {
-                //     //         return Icon(Icons.error_outline);
-                //     //       } else {
-                //     //         return Center(
-                //     //             child: CircularProgressIndicator());
-                //     //       }
-                //     //     })
-                //   ),
-                // ),
+              // STATE
+                Container(
+                    width: 69.99.w,
+                    // height: 7.46.h,
+                    decoration: boxDecoration(
+                      radius: 10.0,
+                    ),
+                    child: FutureBuilder(
+                        future: getState(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: [
+                                    // Image.asset(
+                                    //   city,
+                                    //   width: 6.04.w,
+                                    //   height: 5.04.w,
+                                    //   fit: BoxFit.fill,
+                                    //   color: AppColor.PrimaryDark,
+                                    // ),
+                                    // SizedBox(
+                                    //   width: 4,
+                                    // ),
+                                    Expanded(
+                                      child: Text(
+                                        '$stateName',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                items: stateList
+                                    .map((item) =>
+                                    DropdownMenuItem<String>(
+                                      value: item.id,
+                                      child: Text(
+                                        item.name!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight:
+                                          FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        overflow:
+                                        TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                    .toList(),
+                                value: selectedState,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedState = value as String;
+                                    getCities();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  color: AppColor.PrimaryDark,
+                                ),
+                                iconSize: 14,
+                                buttonHeight: 50,
+                                buttonWidth: 160,
+                                buttonPadding: const EdgeInsets.only(
+                                    left: 14, right: 14),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(14),
+                                  color: AppColor().colorEdit(),
+                                ),
+                                buttonElevation: 0,
+                                itemHeight: 40,
+                                itemPadding: const EdgeInsets.only(
+                                    left: 14, right: 14),
+                                dropdownMaxHeight: 300,
+                                dropdownPadding: null,
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(14),
+                                ),
+                                dropdownElevation: 8,
+                                scrollbarRadius:
+                                const Radius.circular(40),
+                                scrollbarThickness: 6,
+                                scrollbarAlwaysShow: true,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Icon(Icons.error_outline);
+                          } else {
+                            return Center(
+                                child: CircularProgressIndicator());
+                          }
+                        })),
+                SizedBox(
+                  height: 20,
+                ),
+               // CITY
+               //  InkWell(
+               //    onTap: (){
+               //      _showMultiSelect();
+               //    },
+               //    child: Container(
+               //        width: 70.99.w,
+               //        height: 7.26.h,
+               //        decoration: BoxDecoration(
+               //            borderRadius: BorderRadius.circular(10),
+               //            color: AppColor().colorEdit()
+               //        ),
+               //        // boxDecoration(
+               //        //   radius: 10.0,
+               //        // ),
+               //        child: _selectedItems.isEmpty ?
+               //        Padding(
+               //          padding: const EdgeInsets.only(left: 10.0, right: 10),
+               //          child: Row(
+               //            children: [
+               //              Image.asset(
+               //                city,
+               //                width: 6.04.w,
+               //                height: 5.04.w,
+               //                fit: BoxFit.fill,
+               //                color: AppColor.PrimaryDark,
+               //              ),
+               //              Padding(
+               //                padding: EdgeInsets.only(left: 8),
+               //                child: Text(
+               //                  'Select Multiple Cities',
+               //                  style: TextStyle(
+               //                    fontSize: 14,
+               //                    color: Colors.black54,
+               //                    fontWeight: FontWeight.normal,
+               //                  ),
+               //                  overflow: TextOverflow.ellipsis,
+               //                ),
+               //              ),
+               //            ],
+               //          ),
+               //        )
+               //            :  Wrap(
+               //          children: _selectedItems
+               //              .map((item){
+               //            print("okok ${item.id}");
+               //            return Padding(
+               //              padding: const EdgeInsets.only(left: 8.0, right: 8),
+               //              child: Chip(
+               //                label:
+               //                Text(
+               //                    "${item.name}"
+               //                  //item.name
+               //                ),
+               //              ),
+               //            );
+               //          })
+               //              .toList(),
+               //        )
+               //      // FutureBuilder(
+               //      //     future: getCities(),
+               //      //     builder: (BuildContext context,
+               //      //         AsyncSnapshot snapshot) {
+               //      //       if (snapshot.hasData) {
+               //      //         return DropdownButtonHideUnderline(
+               //      //           child: DropdownButton2(
+               //      //             isExpanded: true,
+               //      //             hint: Row(
+               //      //               children: [
+               //      //                 Image.asset(
+               //      //                   city,
+               //      //                   width: 6.04.w,
+               //      //                   height: 5.04.w,
+               //      //                   fit: BoxFit.fill,
+               //      //                   color: AppColor.PrimaryDark,
+               //      //                 ),
+               //      //                 SizedBox(
+               //      //                   width: 4,
+               //      //                 ),
+               //      //                 Expanded(
+               //      //                   child: Text(
+               //      //                     'Select Multiple Cities',
+               //      //                     style: TextStyle(
+               //      //                       fontSize: 14,
+               //      //                       fontWeight: FontWeight.normal,
+               //      //                     ),
+               //      //                     overflow: TextOverflow.ellipsis,
+               //      //                   ),
+               //      //                 ),
+               //      //               ],
+               //      //             ),
+               //      //             items: cityList.map((item) {
+               //      //               return DropdownMenuItem<String>(
+               //      //                 value: item.id,
+               //      //                 enabled: false,
+               //      //                 child: StatefulBuilder(
+               //      //                   builder: (context, menuSetState) {
+               //      //                     final _isSelected =
+               //      //                         selectedCities
+               //      //                             .contains(item);
+               //      //                     print("SLECTED CITY");
+               //      //                     return InkWell(
+               //      //                       onTap: () {
+               //      //                         _isSelected
+               //      //                             ? selectedCities
+               //      //                                 .remove(item.id)
+               //      //                             : selectedCities
+               //      //                                 .add(item.id!);
+               //      //                         setState(() {});
+               //      //                         menuSetState(() {});
+               //      //                       },
+               //      //                       child: Container(
+               //      //                         height: double.infinity,
+               //      //                         padding: const EdgeInsets
+               //      //                                 .symmetric(
+               //      //                             horizontal: 16.0),
+               //      //                         child: Row(
+               //      //                           children: [
+               //      //                             _isSelected
+               //      //                                 ? const Icon(Icons
+               //      //                                     .check_box_outlined)
+               //      //                                 : const Icon(Icons
+               //      //                                     .check_box_outline_blank),
+               //      //                             const SizedBox(
+               //      //                                 width: 16),
+               //      //                             Text(
+               //      //                               item.name!,
+               //      //                               style:
+               //      //                                   const TextStyle(
+               //      //                                 fontSize: 14,
+               //      //                               ),
+               //      //                             ),
+               //      //                           ],
+               //      //                         ),
+               //      //                       ),
+               //      //                     );
+               //      //                   },
+               //      //                 ),
+               //      //               );
+               //      //             }).toList(),
+               //      //             //Use last selected item as the current value so if we've limited menu height, it scroll to last item.
+               //      //             value: selectedCities.isEmpty
+               //      //                 ? null
+               //      //                 : selectedCities.last,
+               //      //             onChanged: (value) {},
+               //      //             buttonHeight: 50,
+               //      //             buttonWidth: 160,
+               //      //             buttonPadding: const EdgeInsets.only(
+               //      //                 left: 14, right: 14),
+               //      //             buttonDecoration: BoxDecoration(
+               //      //               borderRadius:
+               //      //                   BorderRadius.circular(14),
+               //      //               color: Color(0xffF9F9F9),
+               //      //             ),
+               //      //             buttonElevation: 0,
+               //      //             itemHeight: 40,
+               //      //             itemPadding: const EdgeInsets.only(
+               //      //                 left: 14, right: 14),
+               //      //             dropdownMaxHeight: 300,
+               //      //             dropdownPadding: null,
+               //      //             dropdownDecoration: BoxDecoration(
+               //      //               borderRadius:
+               //      //                   BorderRadius.circular(14),
+               //      //             ),
+               //      //             dropdownElevation: 8,
+               //      //             scrollbarRadius:
+               //      //                 const Radius.circular(40),
+               //      //             scrollbarThickness: 6,
+               //      //             scrollbarAlwaysShow: true,
+               //      //             selectedItemBuilder: (context) {
+               //      //               return cityList.map(
+               //      //                 (item) {
+               //      //                   return Container(
+               //      //                     // alignment: AlignmentDirectional.center,
+               //      //                     padding:
+               //      //                         const EdgeInsets.symmetric(
+               //      //                             horizontal: 16.0),
+               //      //                     child: Text(
+               //      //                       selectedCities.join(','),
+               //      //                       style: const TextStyle(
+               //      //                         fontSize: 14,
+               //      //                         overflow:
+               //      //                             TextOverflow.ellipsis,
+               //      //                       ),
+               //      //                       maxLines: 1,
+               //      //                     ),
+               //      //                   );
+               //      //                 },
+               //      //               ).toList();
+               //      //             },
+               //      //           ),
+               //      //         );
+               //      //       } else if (snapshot.hasError) {
+               //      //         return Icon(Icons.error_outline);
+               //      //       } else {
+               //      //         return Center(
+               //      //             child: CircularProgressIndicator());
+               //      //       }
+               //      //     })
+               //    ),
+               //  ),
 
                 Container(
-                  width: 80.99.w,
-                  margin: EdgeInsets.symmetric(horizontal: 20),
-                  height: 7.46.h,
-                  decoration: boxDecoration(
-                    radius: 10.0,
-                    color:AppColor().colorEdit(),
-                  ),
-                  child:DropdownButtonHideUnderline(
-                    child: DropdownButton2(
-                      isExpanded: true,
-                      hint: Row(
-                        children: [
-                          // Image.asset(
-                          //   city,
-                          //   width: 6.04.w,
-                          //   height: 5.04.w,
-                          //   fit: BoxFit.fill,
-                          //   color: AppColor.PrimaryDark,
-                          // ),
-                          // SizedBox(
-                          //   width: 4,
-                          // ),
-                          Expanded(
-                            child: Text(
-                              cityName == null || cityName == "" ? 'Select City' :'${cityName}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                      items: cityList
-                          .map((item) =>
-                          DropdownMenuItem<String>(
-                            value: item.id,
-                            child: Text(
-                              item.name!,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight:
-                                FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                              overflow:
-                              TextOverflow.ellipsis,
-                            ),
-                          ))
-                          .toList(),
-                      value: SelectedSignleCity,
-                      onChanged: (value) {
-                        setState(() {
-                          SelectedSignleCity = value as String;
-
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: AppColor.PrimaryDark,
-                      ),
-                      iconSize: 14,
-                      buttonHeight: 50,
-                      buttonWidth: 160,
-                      buttonPadding: const EdgeInsets.only(
-                          left: 14, right: 14),
-                      buttonDecoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.circular(14),
-                        color: AppColor().colorEdit(),
-                      ),
-                      buttonElevation: 0,
-                      itemHeight: 40,
-                      itemPadding: const EdgeInsets.only(
-                          left: 14, right: 14),
-                      dropdownMaxHeight: 300,
-                      dropdownPadding: null,
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.circular(14),
-                      ),
-                      dropdownElevation: 8,
-                      scrollbarRadius:
-                      const Radius.circular(40),
-                      scrollbarThickness: 6,
-                      scrollbarAlwaysShow: true,
+                    width: 69.99.w,
+                    // height: 7.46.h,
+                    decoration: boxDecoration(
+                      radius: 10.0,
                     ),
-                  ),
-                ),
+                    child: FutureBuilder(
+                        future: getCities(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return DropdownButtonHideUnderline(
+                              child: DropdownButton2(
+                                isExpanded: true,
+                                hint: Row(
+                                  children: [
+                                    // Image.asset(
+                                    //   city,
+                                    //   width: 6.04.w,
+                                    //   height: 5.04.w,
+                                    //   fit: BoxFit.fill,
+                                    //   color: AppColor.PrimaryDark,
+                                    // ),
+                                    // SizedBox(
+                                    //   width: 4,
+                                    // ),
+                                    Expanded(
+                                      child: Text(
+                                        '$cityName',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                items: cityList
+                                    .map((item) =>
+                                    DropdownMenuItem<String>(
+                                      value: item.id,
+                                      child: Text(
+                                        item.name!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight:
+                                          FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        overflow:
+                                        TextOverflow.ellipsis,
+                                      ),
+                                    ))
+                                    .toList(),
+                                value: SelectedSignleCity,
+                                onChanged: (value) {
+                                  setState(() {
+                                    SelectedSignleCity = value as String;
+                                    getCities();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  color: AppColor.PrimaryDark,
+                                ),
+                                iconSize: 14,
+                                buttonHeight: 50,
+                                buttonWidth: 160,
+                                buttonPadding: const EdgeInsets.only(
+                                    left: 14, right: 14),
+                                buttonDecoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(14),
+                                  color: AppColor().colorEdit(),
+                                ),
+                                buttonElevation: 0,
+                                itemHeight: 40,
+                                itemPadding: const EdgeInsets.only(
+                                    left: 14, right: 14),
+                                dropdownMaxHeight: 300,
+                                dropdownPadding: null,
+                                dropdownDecoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(14),
+                                ),
+                                dropdownElevation: 8,
+                                scrollbarRadius:
+                                const Radius.circular(40),
+                                scrollbarThickness: 6,
+                                scrollbarAlwaysShow: true,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Icon(Icons.error_outline);
+                          } else {
+                            return Center(
+                                child: CircularProgressIndicator());
+                          }
+                        })),
+                ////////////
+                // Container(
+                //   width: 80.99.w,
+                //   margin: EdgeInsets.symmetric(horizontal: 20),
+                //   height: 7.46.h,
+                //   decoration: boxDecoration(
+                //     radius: 10.0,
+                //     color:AppColor().colorEdit(),
+                //   ),
+                //   child:DropdownButtonHideUnderline(
+                //     child: DropdownButton2(
+                //       isExpanded: true,
+                //       hint: Row(
+                //         children: [
+                //           // Image.asset(
+                //           //   city,
+                //           //   width: 6.04.w,
+                //           //   height: 5.04.w,
+                //           //   fit: BoxFit.fill,
+                //           //   color: AppColor.PrimaryDark,
+                //           // ),
+                //           // SizedBox(
+                //           //   width: 4,
+                //           // ),
+                //           Expanded(
+                //             child: Text(
+                //               cityName == null || cityName == "" ? 'Select City' :'${cityName}',
+                //               style: TextStyle(
+                //                 fontSize: 14,
+                //                 fontWeight: FontWeight.normal,
+                //               ),
+                //               overflow: TextOverflow.ellipsis,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //       items: cityList
+                //           .map((item) =>
+                //           DropdownMenuItem<String>(
+                //             value: item.id,
+                //             child: Text(
+                //               item.name!,
+                //               style: const TextStyle(
+                //                 fontSize: 14,
+                //                 fontWeight:
+                //                 FontWeight.bold,
+                //                 color: Colors.black,
+                //               ),
+                //               overflow:
+                //               TextOverflow.ellipsis,
+                //             ),
+                //           ))
+                //           .toList(),
+                //       value: SelectedSignleCity,
+                //       onChanged: (value) {
+                //         setState(() {
+                //           SelectedSignleCity = value as String;
+                //
+                //         });
+                //       },
+                //       icon: const Icon(
+                //         Icons.arrow_forward_ios_outlined,
+                //         color: AppColor.PrimaryDark,
+                //       ),
+                //       iconSize: 14,
+                //       buttonHeight: 50,
+                //       buttonWidth: 160,
+                //       buttonPadding: const EdgeInsets.only(
+                //           left: 14, right: 14),
+                //       buttonDecoration: BoxDecoration(
+                //         borderRadius:
+                //         BorderRadius.circular(14),
+                //         color: AppColor().colorEdit(),
+                //       ),
+                //       buttonElevation: 0,
+                //       itemHeight: 40,
+                //       itemPadding: const EdgeInsets.only(
+                //           left: 14, right: 14),
+                //       dropdownMaxHeight: 300,
+                //       dropdownPadding: null,
+                //       dropdownDecoration: BoxDecoration(
+                //         borderRadius:
+                //         BorderRadius.circular(14),
+                //       ),
+                //       dropdownElevation: 8,
+                //       scrollbarRadius:
+                //       const Radius.circular(40),
+                //       scrollbarThickness: 6,
+                //       scrollbarAlwaysShow: true,
+                //     ),
+                //   ),
+                // ),
 
                 SizedBox(
                   height: 15,
@@ -1880,7 +2030,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     maxLength: 10,
                   ),
                 ),
-
                 SizedBox(
                   height: 15,
                 ),
@@ -2394,9 +2543,526 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     //     })
                   ),
                 ),
+
                 SizedBox(
                   height: 15,
                 ),
+
+                Text("Payment Purpose",style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w600),),
+                SizedBox(height: 10,),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: payNameController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Enter name",
+                      label: Text(
+                        "Name",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Enter name";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: accController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Accout Number",
+                      label: Text(
+                        "Account Number",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Enter Account Number";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    maxLength: 12,
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: bankNameController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Bank Name",
+                      label: Text(
+                        "Bank Name",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Bank Name";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+
+                  ),
+                ),
+
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: bankAddressController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Bank Address",
+                      label: Text(
+                        "Bank Address",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Bank Address";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+
+                  ),
+                ),
+
+                SizedBox(height: 15,),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: ifscController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Ifsc",
+                      label: Text(
+                        "Ifsc",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Ifsc";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+
+                  ),
+                ),
+                SizedBox(height: 15,),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+                    controller: panNoController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Pan Number",
+                      label: Text(
+                        "Pan Number",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Enter pan";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+                  ),
+                ),
+
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+                    controller: sortCodeController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Sort Code",
+                      label: Text(
+                        "Sort Code",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Sort Code";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+                  ),
+                ),
+
+                SizedBox(height: 15,),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+                    controller: routingController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Routing No",
+                      label: Text(
+                        "Routing No",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Routing No";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.name,
+                  ),
+                ),
+                SizedBox(height:15),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: paymailController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Email",
+                      label: Text(
+                        "Email",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Enter email";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: payContactController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Contact Number",
+                      label: Text(
+                        "Contact Number",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Enter Contact Number";
+                      }
+                      return null;
+                    },
+                    maxLength: 10,
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  width: 80.99.w,
+                  height: 7.46.h,
+                  decoration: boxDecoration(
+                    radius: 10.0,
+                  ),
+                  child:DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      isExpanded: true,
+                      hint: Text(
+                        'Payment Mode ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      items: ['NEFT','RTGS','IMPS','UPI']
+                          .map((String? item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item.toString(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))
+                          .toList(),
+                      value: paymentMode,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentMode = value as String;
+                          // // serviceName.text = serviceModel.data!
+                          //     .firstWhere((element) => element.id == value)
+                          //     .cName
+                          //     .toString();
+
+                        });
+
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: AppColor.PrimaryDark,
+                      ),
+                      iconSize: 14,
+                      buttonHeight: 50,
+                      buttonWidth: 160,
+                      buttonPadding:
+                      const EdgeInsets.only(left: 14, right: 14),
+                      buttonDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: AppColor().colorEdit(),
+                        //color: Colors.grey.withOpacity(0.05)
+                      ),
+                      buttonElevation: 0,
+                      itemHeight: 40,
+                      itemPadding:
+                      const EdgeInsets.only(left: 14, right: 14),
+                      dropdownMaxHeight: 300,
+                      dropdownPadding: null,
+                      dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      dropdownElevation: 8,
+                      scrollbarRadius: const Radius.circular(40),
+                      scrollbarThickness: 6,
+                      scrollbarAlwaysShow: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  width: 80.99.w,
+                  height: 7.46.h,
+                  decoration: boxDecoration(
+                    radius: 10.0,
+                  ),
+                  child:DropdownButtonHideUnderline(
+                    child: DropdownButton2(
+                      isExpanded: true,
+                      hint: Text(
+                        'Paying',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      items: ['Payout','Refund']
+                          .map((String? item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item.toString(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ))
+                          .toList(),
+                      value: paying,
+                      onChanged: (value) {
+                        setState(() {
+                          paying = value as String;
+                          // // serviceName.text = serviceModel.data!
+                          //     .firstWhere((element) => element.id == value)
+                          //     .cName
+                          //     .toString();
+
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.arrow_forward_ios_outlined,
+                        color: AppColor.PrimaryDark,
+                      ),
+                      iconSize: 14,
+                      buttonHeight: 50,
+                      buttonWidth: 160,
+                      buttonPadding:
+                      const EdgeInsets.only(left: 14, right: 14),
+                      buttonDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                        color: AppColor().colorEdit(),
+                        //color: Colors.grey.withOpacity(0.05)
+                      ),
+                      buttonElevation: 0,
+                      itemHeight: 40,
+                      itemPadding:
+                      const EdgeInsets.only(left: 14, right: 14),
+                      dropdownMaxHeight: 300,
+                      dropdownPadding: null,
+                      dropdownDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      dropdownElevation: 8,
+                      scrollbarRadius: const Radius.circular(40),
+                      scrollbarThickness: 6,
+                      scrollbarAlwaysShow: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                      color: AppColor().colorEdit(),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: TextFormField(
+
+                    controller: razorpayController,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                      EdgeInsets.symmetric(horizontal: 10),
+                      hintText: "Razorpay Id",
+                      label: Text(
+                        "RazorPay Id",
+                      ),
+                      hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400),
+                      border: InputBorder.none,
+                    ),
+                    validator: (v) {
+                      if (v!.isEmpty) {
+                        return "Enter razorPay ID";
+                      }
+                      return null;
+                    },
+                     
+                  ),
+                ),
+                SizedBox(height: 15,),
                 Container(
                     margin: EdgeInsets.only(bottom: 7.h),
                     child: InkWell(
@@ -2411,6 +3077,8 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                       child: UtilityWidget.lodingButton(
                           buttonLogin: buttonLogin, btntext: 'Save'),
                     )),
+                SizedBox(height: 15,),
+
               ],
             ),
           ),

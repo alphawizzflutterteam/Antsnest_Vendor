@@ -35,7 +35,7 @@ class _MainCustomerSupportState extends State<MainCustomerSupport> {
   @override
   void initState() {
     super.initState();
-    getMyFaq();
+   // getMyFaq();
   }
 
   @override
@@ -146,156 +146,156 @@ class _MainCustomerSupportState extends State<MainCustomerSupport> {
                       ),
                     ),
 // new Section
-                    Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage('images/need_help_bg.png'))),
-                      width: mysize.width * 0.9,
-                      child: SizedBox(
-                          width: mysize.width * 0.9,
-                          height: mysize.height * 0.25,
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              'You Can have Live Whats \napp Chat With Our Support Team',
-                              textAlign: TextAlign.left,
-                              textScaleFactor: 1.0,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 15.0),
-                            ),
-                          )),
-                    ),
-                    // my all Faq
-                    StreamBuilder<GetFaqResponse>(
-                        stream: getFaqSteam.stream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(
-                                child: Container(
-                                    child: Text(snapshot.error.toString())));
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return LodingAllPage();
-                          }
-                          return Container(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.data!.length,
-                                physics: ScrollPhysics(),
-                                itemBuilder: (context, int i) {
-                                  return CustomerSupportFAQ(
-                                      title: UtilityHlepar.convertNA(
-                                          snapshot.data!.data![i].title),
-                                      description: UtilityHlepar.convertNA(
-                                          snapshot.data!.data![i].description));
-                                }),
-                          );
-                        }),
-                    Container(
-                        margin: EdgeInsets.only(
-                            left: 4.33.w, right: 4.33.w, bottom: 1.87.h),
-                        child: text(
-                            "If you Can't find a solution You can Write About Your Problem and Send to us",
-                            textColor: AppColor().colorTextPrimary(),
-                            fontSize: 8.5.sp,
-                            fontFamily: fontMedium,
-                            isCentered: false,
-                            maxLine: 3)),
-                    SizedBox(
-                      height: 0.5.h,
-                    ),
-                    Container(
-                      height: 15.46.h,
-                      margin: EdgeInsets.only(
-                          left: 4.33.w, right: 4.33.w, bottom: 1.87.h),
-                      child: TextFormField(
-                        cursorColor: Colors.red,
-                        obscureText: false,
-                        keyboardType: TextInputType.text,
-                        minLines: 5,
-                        maxLines: 5,
-                        controller: desController,
-                        validator: FormValidation.checkEmptyValidator,
-                        style: TextStyle(
-                          color: AppColor().colorTextFour(),
-                          fontSize: 10.sp,
-                        ),
-                        inputFormatters: [],
-                        decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: AppColor().colorEdit(),
-                                width: 1.0,
-                                style: BorderStyle.solid),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          labelText: 'Describe Your Problem here',
-                          alignLabelWithHint: true,
-                          labelStyle: TextStyle(
-                            color: AppColor().colorTextFour(),
-                            fontSize: 10.sp,
-                          ),
-                          helperText: '',
-                          counterText: '',
-                          fillColor: AppColor().colorEdit(),
-                          enabled: true,
-                          filled: true,
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: AppColor().colorEdit(), width: 5.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 1.02.h,
-                    ),
-                    Center(
-                      child: InkWell(
-                        onTap: () async {
-                          if (_fromKey.currentState!.validate()) {
-                            customerSupportAPI();
-                          }
-                          // setState(() {
-                          //   enabled = true;
-                          // });
-                          // await Future.delayed(Duration(milliseconds: 200));
-                          // setState(() {
-                          //   enabled = false;
-                          // });
-                          // Navigator.pop(context);
-                        },
-                        child: ScaleAnimatedWidget.tween(
-                          enabled: enabled,
-                          duration: Duration(milliseconds: 200),
-                          scaleDisabled: 1.0,
-                          scaleEnabled: 0.9,
-                          child: Container(
-                            width: 69.99.w,
-                            height: 6.46.h,
-                            decoration: boxDecoration(
-                                radius: 15.0,
-                                bgColor:AppColor.PrimaryDark),
-                            child: Center(
-                              child: text(
-                                "Save",
-                                textColor: Color(0xffffffff),
-                                fontSize: 14.sp,
-                                fontFamily: fontRegular,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 4.02.h,
-                    ),
+//                     Container(
+//                       alignment: Alignment.center,
+//                       decoration: BoxDecoration(
+//                           image: DecorationImage(
+//                               image: AssetImage('images/need_help_bg.png'))),
+//                       width: mysize.width * 0.9,
+//                       child: SizedBox(
+//                           width: mysize.width * 0.9,
+//                           height: mysize.height * 0.25,
+//                           child: Container(
+//                             alignment: Alignment.centerLeft,
+//                             margin: EdgeInsets.only(left: 20.0),
+//                             child: Text(
+//                               'You Can have Live Whats \napp Chat With Our Support Team',
+//                               textAlign: TextAlign.left,
+//                               textScaleFactor: 1.0,
+//                               style: TextStyle(
+//                                   color: Colors.white, fontSize: 15.0),
+//                             ),
+//                           )),
+//                     ),
+//                     // my all Faq
+//                     StreamBuilder<GetFaqResponse>(
+//                         stream: getFaqSteam.stream,
+//                         builder: (context, snapshot) {
+//                           if (snapshot.hasError) {
+//                             return Center(
+//                                 child: Container(
+//                                     child: Text(snapshot.error.toString())));
+//                           } else if (snapshot.connectionState ==
+//                               ConnectionState.waiting) {
+//                             return LodingAllPage();
+//                           }
+//                           return Container(
+//                             child: ListView.builder(
+//                                 shrinkWrap: true,
+//                                 itemCount: snapshot.data!.data!.length,
+//                                 physics: ScrollPhysics(),
+//                                 itemBuilder: (context, int i) {
+//                                   return CustomerSupportFAQ(
+//                                       title: UtilityHlepar.convertNA(
+//                                           snapshot.data!.data![i].title),
+//                                       description: UtilityHlepar.convertNA(
+//                                           snapshot.data!.data![i].description));
+//                                 }),
+//                           );
+//                         }),
+//                     Container(
+//                         margin: EdgeInsets.only(
+//                             left: 4.33.w, right: 4.33.w, bottom: 1.87.h),
+//                         child: text(
+//                             "If you Can't find a solution You can Write About Your Problem and Send to us",
+//                             textColor: AppColor().colorTextPrimary(),
+//                             fontSize: 8.5.sp,
+//                             fontFamily: fontMedium,
+//                             isCentered: false,
+//                             maxLine: 3)),
+//                     SizedBox(
+//                       height: 0.5.h,
+//                     ),
+//                     Container(
+//                       height: 15.46.h,
+//                       margin: EdgeInsets.only(
+//                           left: 4.33.w, right: 4.33.w, bottom: 1.87.h),
+//                       child: TextFormField(
+//                         cursorColor: Colors.red,
+//                         obscureText: false,
+//                         keyboardType: TextInputType.text,
+//                         minLines: 5,
+//                         maxLines: 5,
+//                         controller: desController,
+//                         validator: FormValidation.checkEmptyValidator,
+//                         style: TextStyle(
+//                           color: AppColor().colorTextFour(),
+//                           fontSize: 10.sp,
+//                         ),
+//                         inputFormatters: [],
+//                         decoration: InputDecoration(
+//                           focusedBorder: UnderlineInputBorder(
+//                             borderSide: BorderSide(
+//                                 color: AppColor().colorEdit(),
+//                                 width: 1.0,
+//                                 style: BorderStyle.solid),
+//                             borderRadius:
+//                                 BorderRadius.all(Radius.circular(10.0)),
+//                           ),
+//                           labelText: 'Describe Your Problem here',
+//                           alignLabelWithHint: true,
+//                           labelStyle: TextStyle(
+//                             color: AppColor().colorTextFour(),
+//                             fontSize: 10.sp,
+//                           ),
+//                           helperText: '',
+//                           counterText: '',
+//                           fillColor: AppColor().colorEdit(),
+//                           enabled: true,
+//                           filled: true,
+//                           enabledBorder: UnderlineInputBorder(
+//                             borderSide: BorderSide(
+//                                 color: AppColor().colorEdit(), width: 5.0),
+//                             borderRadius:
+//                                 BorderRadius.all(Radius.circular(10.0)),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       height: 1.02.h,
+//                     ),
+//                     Center(
+//                       child: InkWell(
+//                         onTap: () async {
+//                           if (_fromKey.currentState!.validate()) {
+//                             customerSupportAPI();
+//                           }
+//                           // setState(() {
+//                           //   enabled = true;
+//                           // });
+//                           // await Future.delayed(Duration(milliseconds: 200));
+//                           // setState(() {
+//                           //   enabled = false;
+//                           // });
+//                           // Navigator.pop(context);
+//                         },
+//                         child: ScaleAnimatedWidget.tween(
+//                           enabled: enabled,
+//                           duration: Duration(milliseconds: 200),
+//                           scaleDisabled: 1.0,
+//                           scaleEnabled: 0.9,
+//                           child: Container(
+//                             width: 69.99.w,
+//                             height: 6.46.h,
+//                             decoration: boxDecoration(
+//                                 radius: 15.0,
+//                                 bgColor:AppColor.PrimaryDark),
+//                             child: Center(
+//                               child: text(
+//                                 "Save",
+//                                 textColor: Color(0xffffffff),
+//                                 fontSize: 14.sp,
+//                                 fontFamily: fontRegular,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       height: 4.02.h,
+//                     ),
                   ],
                 ),
               ),

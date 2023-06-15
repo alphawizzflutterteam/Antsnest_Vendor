@@ -49,6 +49,10 @@ class _ManageServiceState extends State<ManageService> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Future.delayed(Duration(milliseconds: 200),(){
+      return getVendorAllServices();
+    });
   }
 
   Future _refresh() async {
@@ -134,194 +138,360 @@ class _ManageServiceState extends State<ManageService> {
                   SizedBox(
                     height: 2.02.h,
                   ),
-                  FutureBuilder(
-                      future: getVendorAllServices(),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        VendorServiceModel vendorModel = snapshot.data;
-                        //print("checking error ${snapshot.hasError} and ${snapshot.error}");
-                        if (snapshot.hasData) {
-                          return vendorModel.status == 1
-                              ? Container(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              itemCount: vendorModel.restaurants!.length,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(10.0),
+                  vendorServiceModel == null ? Center(child: CircularProgressIndicator(),) : ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: vendorServiceModel!.restaurants!.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.circular(10.0),
+                        ),
+                        margin: EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: Container(
+                                width: 100,
+                                // height: 200,
+                                child: ClipRRect(
+                                  borderRadius:
+                                  BorderRadius.circular(10.0),
+                                  child: vendorServiceModel!.restaurants![index].logo == ""
+                                      ? Image.asset(
+                                      "images/Placeholder.png")
+                                      : Image.network(
+                                    "${vendorServiceModel!.restaurants![index].logo![0].toString()}",
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 200,
                                   ),
-                                  margin: EdgeInsets.all(10.0),
-                                  child: Column(
+                                ),
+                              ),
+                              title: Text(
+                                "${vendorServiceModel!.restaurants![index].resName}",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 8.0,
+                                  ),
+                                  Text(
+                                      "${vendorServiceModel!.restaurants![index].cName}"),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Text(
+                                      "₹ ${vendorServiceModel!.restaurants![index].price}"),
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
                                     children: [
-                                      ListTile(
-                                        leading: Container(
-                                          width: 100,
-                                          // height: 200,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(10.0),
-                                            child: vendorModel.restaurants![index].logo == ""
-                                                ? Image.asset(
-                                                "images/Placeholder.png")
-                                                : Image.network(
-                                              "${vendorModel.restaurants![index].logo![0].toString()}",
-                                              fit: BoxFit.cover,
-                                              width: 100,
-                                              height: 200,
-                                            ),
-                                          ),
-                                        ),
-                                        title: Text(
-                                          "${vendorModel.restaurants![index].resName}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16),
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            SizedBox(
-                                              height: 8.0,
-                                            ),
-                                            Text(
-                                                "${vendorModel.restaurants![index].cName}"),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Text(
-                                                "₹ ${vendorModel.restaurants![index].price}"),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                // Text.rich(
-                                                //     TextSpan(children: [
-                                                //       WidgetSpan(
-                                                //           child: Icon(
-                                                //             Icons
-                                                //                 .watch_later_outlined,
-                                                //             size: 15,
-                                                //           )),
-                                                //       TextSpan(
-                                                //           text:
-                                                //           " ${vendorModel.restaurants![index].hours}"),
-                                                //     ])),
-                                                Text.rich(
-                                                    TextSpan(children: [
-                                                      WidgetSpan(
-                                                          child: Icon(
-                                                            Icons.star,
-                                                            color: Colors.yellow,
-                                                            size: 15,
-                                                          )),
-                                                      TextSpan(text:
-                                                      " ${vendorModel.restaurants![index].reviewCount}"),
-                                                    ])),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Divider(
-                                        indent: 15.0,
-                                        endIndent: 15.0,
-                                        thickness: 1.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                        children: [
-                                          TextButton.icon(
-                                            onPressed: () async{
-                                              bool result = await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => EditServices(
-                                                        city: vendorModel.restaurants![index].cityId,
-                                                        country: vendorModel.restaurants![index].countryId,
-                                                        state: vendorModel.restaurants![index].stateId,
-                                                        logo: vendorModel.restaurants![index].logo,
-                                                        serviceName: vendorModel.restaurants![index].resName,
-                                                        catId: vendorModel.restaurants![index].catId,
-                                                        serviceCharge: vendorModel.restaurants![index].price,
-                                                        // serviceTime: vendorModel.restaurants![index].hours,
-                                                        subCatId: vendorModel.restaurants![index].scatId,
-                                                        serviceId: vendorModel.restaurants![index].resId,
-                                                        serviceImage: vendorModel.restaurants![index].logo,
-                                                        subName: vendorModel.restaurants![index].subCat,
-                                                        serviceDescription: vendorModel.restaurants![index].resDesc,
-                                                        childName: vendorModel.restaurants![index].cName,
-                                                        // experts: vendorModel.restaurants![index].experts,
-                                                      )));
-                                              if(result == true){
-                                                setState(() {
-                                                  CircularProgressIndicator();
-                                                  getVendorAllServices();
-                                                });
-                                              }
-                                            },
-                                            icon: Icon(
-                                                Icons.edit_note_outlined,
-                                                size: 18),
-                                            label: Text("Edit Service"),
-                                            style: TextButton.styleFrom(
-                                                primary: AppColor()
-                                                    .colorPrimaryDark()),
-                                          ),
-                                          TextButton.icon(
-                                            onPressed: () async {
-                                              RemoveServiceModel?
-                                              removeModel =
-                                              await removeServices(
-                                                  vendorModel
-                                                      .restaurants![index].resId);
-                                              if (removeModel!.responseCode == "1") {
-                                                UtilityHlepar.getToast(
-                                                    "Service Deleted Successfully!");
-                                                setState(() {
-                                                  CircularProgressIndicator();
-                                                  getVendorAllServices();
-                                                });
-                                              }
-                                            },
-                                            icon: Icon(Icons.delete_rounded,
-                                                size: 18),
-                                            label: Text("Delete"),
-                                            style: TextButton.styleFrom(
-                                                primary: Colors.green),
-                                          ),
-                                        ],
-                                      ),
+                                      // Text.rich(
+                                      //     TextSpan(children: [
+                                      //       WidgetSpan(
+                                      //           child: Icon(
+                                      //             Icons
+                                      //                 .watch_later_outlined,
+                                      //             size: 15,
+                                      //           )),
+                                      //       TextSpan(
+                                      //           text:
+                                      //           " ${vendorModel.restaurants![index].hours}"),
+                                      //     ])),
+                                      Text.rich(
+                                          TextSpan(children: [
+                                            WidgetSpan(
+                                                child: Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                  size: 15,
+                                                )),
+                                            TextSpan(text:
+                                            " ${vendorServiceModel!.restaurants![index].reviewCount}"),
+                                          ])),
                                     ],
                                   ),
-                                );
-                              },
+                                  SizedBox(
+                                    height: 5.0,
+                                  ),
+                                ],
+                              ),
                             ),
-                          )
-                              : Container(
-                            height: MediaQuery.of(context).size.height/1.5,
-                                child: Center(
-                            child: Text("No Services Found"),
-                          ),
-                              );
-                        } else if (snapshot.hasError) {
-                          return Icon(Icons.error_outline);
-                        } else {
-                          return Container(
-                              height: MediaQuery.of(context).size.height/1.5,
-                              child: Center(child: Image.asset("images/icons/loader.gif")));
-                        }
-                      }),
+                            Divider(
+                              indent: 15.0,
+                              endIndent: 15.0,
+                              thickness: 1.0,
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceAround,
+                              children: [
+                                TextButton.icon(
+                                  onPressed: () async{
+                                    bool result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EditServices(
+                                              city: vendorServiceModel!.restaurants![index].cityId,
+                                              country: vendorServiceModel!.restaurants![index].countryId,
+                                              state: vendorServiceModel!.restaurants![index].stateId,
+                                              logo: vendorServiceModel!.restaurants![index].logo,
+                                              serviceName: vendorServiceModel!.restaurants![index].resName,
+                                              catId: vendorServiceModel!.restaurants![index].catId,
+                                              serviceCharge: vendorServiceModel!.restaurants![index].price,
+                                              // serviceTime: vendorModel.restaurants![index].hours,
+                                              subCatId: vendorServiceModel!.restaurants![index].scatId,
+                                              serviceId: vendorServiceModel!.restaurants![index].resId,
+                                              serviceImage: vendorServiceModel!.restaurants![index].logo,
+                                              subName: vendorServiceModel!.restaurants![index].subCat,
+                                              serviceDescription: vendorServiceModel!.restaurants![index].resDesc,
+                                              childName: vendorServiceModel!.restaurants![index].cName,
+                                              currency: vendorServiceModel!.restaurants![index].baseCurrency,
+                                              // experts: vendorModel.restaurants![index].experts,
+                                            )));
+                                    if(result == true){
+                                      setState(() {
+                                        CircularProgressIndicator();
+                                        getVendorAllServices();
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(
+                                      Icons.edit_note_outlined,
+                                      size: 18),
+                                  label: Text("Edit Service"),
+                                  style: TextButton.styleFrom(
+                                      primary: AppColor()
+                                          .colorPrimaryDark()),
+                                ),
+                                TextButton.icon(
+                                  onPressed: () async {
+                                    RemoveServiceModel?
+                                    removeModel =
+                                    await removeServices(
+                                        vendorServiceModel!
+                                            .restaurants![index].resId);
+                                    if (removeModel!.responseCode == "1") {
+                                      UtilityHlepar.getToast(
+                                          "Service Deleted Successfully!");
+                                      setState(() {
+                                        CircularProgressIndicator();
+                                        getVendorAllServices();
+                                      });
+                                    }
+                                  },
+                                  icon: Icon(Icons.delete_rounded,
+                                      size: 18),
+                                  label: Text("Delete"),
+                                  style: TextButton.styleFrom(
+                                      primary: Colors.green),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  // FutureBuilder(
+                  //     future: getVendorAllServices(),
+                  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  //       VendorServiceModel vendorModel = snapshot.data;
+                  //       //print("checking error ${snapshot.hasError} and ${snapshot.error}");
+                  //       if (snapshot.hasData) {
+                  //         return vendorModel.status == 1
+                  //             ? Container(
+                  //           child: ListView.builder(
+                  //             shrinkWrap: true,
+                  //             physics: ClampingScrollPhysics(),
+                  //             itemCount: vendorModel.restaurants!.length,
+                  //             itemBuilder: (context, index) {
+                  //               return Card(
+                  //                 shape: RoundedRectangleBorder(
+                  //                   borderRadius:
+                  //                   BorderRadius.circular(10.0),
+                  //                 ),
+                  //                 margin: EdgeInsets.all(10.0),
+                  //                 child: Column(
+                  //                   children: [
+                  //                     ListTile(
+                  //                       leading: Container(
+                  //                         width: 100,
+                  //                         // height: 200,
+                  //                         child: ClipRRect(
+                  //                           borderRadius:
+                  //                           BorderRadius.circular(10.0),
+                  //                           child: vendorModel.restaurants![index].logo == ""
+                  //                               ? Image.asset(
+                  //                               "images/Placeholder.png")
+                  //                               : Image.network(
+                  //                             "${vendorModel.restaurants![index].logo![0].toString()}",
+                  //                             fit: BoxFit.cover,
+                  //                             width: 100,
+                  //                             height: 200,
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                       title: Text(
+                  //                         "${vendorModel.restaurants![index].resName}",
+                  //                         style: TextStyle(
+                  //                             fontWeight: FontWeight.bold,
+                  //                             fontSize: 16),
+                  //                       ),
+                  //                       subtitle: Column(
+                  //                         crossAxisAlignment:
+                  //                         CrossAxisAlignment.start,
+                  //                         children: [
+                  //                           SizedBox(
+                  //                             height: 8.0,
+                  //                           ),
+                  //                           Text(
+                  //                               "${vendorModel.restaurants![index].cName}"),
+                  //                           SizedBox(
+                  //                             height: 5.0,
+                  //                           ),
+                  //                           Text(
+                  //                               "₹ ${vendorModel.restaurants![index].price}"),
+                  //                           SizedBox(
+                  //                             height: 5.0,
+                  //                           ),
+                  //                           Row(
+                  //                             mainAxisAlignment:
+                  //                             MainAxisAlignment
+                  //                                 .spaceBetween,
+                  //                             children: [
+                  //                               // Text.rich(
+                  //                               //     TextSpan(children: [
+                  //                               //       WidgetSpan(
+                  //                               //           child: Icon(
+                  //                               //             Icons
+                  //                               //                 .watch_later_outlined,
+                  //                               //             size: 15,
+                  //                               //           )),
+                  //                               //       TextSpan(
+                  //                               //           text:
+                  //                               //           " ${vendorModel.restaurants![index].hours}"),
+                  //                               //     ])),
+                  //                               Text.rich(
+                  //                                   TextSpan(children: [
+                  //                                     WidgetSpan(
+                  //                                         child: Icon(
+                  //                                           Icons.star,
+                  //                                           color: Colors.yellow,
+                  //                                           size: 15,
+                  //                                         )),
+                  //                                     TextSpan(text:
+                  //                                     " ${vendorModel.restaurants![index].reviewCount}"),
+                  //                                   ])),
+                  //                             ],
+                  //                           ),
+                  //                           SizedBox(
+                  //                             height: 5.0,
+                  //                           ),
+                  //                         ],
+                  //                       ),
+                  //                     ),
+                  //                     Divider(
+                  //                       indent: 15.0,
+                  //                       endIndent: 15.0,
+                  //                       thickness: 1.0,
+                  //                     ),
+                  //                     Row(
+                  //                       mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceAround,
+                  //                       children: [
+                  //                         TextButton.icon(
+                  //                           onPressed: () async{
+                  //                             bool result = await Navigator.push(
+                  //                                 context,
+                  //                                 MaterialPageRoute(
+                  //                                     builder: (context) => EditServices(
+                  //                                       city: vendorModel.restaurants![index].cityId,
+                  //                                       country: vendorModel.restaurants![index].countryId,
+                  //                                       state: vendorModel.restaurants![index].stateId,
+                  //                                       logo: vendorModel.restaurants![index].logo,
+                  //                                       serviceName: vendorModel.restaurants![index].resName,
+                  //                                       catId: vendorModel.restaurants![index].catId,
+                  //                                       serviceCharge: vendorModel.restaurants![index].price,
+                  //                                       // serviceTime: vendorModel.restaurants![index].hours,
+                  //                                       subCatId: vendorModel.restaurants![index].scatId,
+                  //                                       serviceId: vendorModel.restaurants![index].resId,
+                  //                                       serviceImage: vendorModel.restaurants![index].logo,
+                  //                                       subName: vendorModel.restaurants![index].subCat,
+                  //                                       serviceDescription: vendorModel.restaurants![index].resDesc,
+                  //                                       childName: vendorModel.restaurants![index].cName,
+                  //                                       // experts: vendorModel.restaurants![index].experts,
+                  //                                     )));
+                  //                             if(result == true){
+                  //                               setState(() {
+                  //                                 CircularProgressIndicator();
+                  //                                 getVendorAllServices();
+                  //                               });
+                  //                             }
+                  //                           },
+                  //                           icon: Icon(
+                  //                               Icons.edit_note_outlined,
+                  //                               size: 18),
+                  //                           label: Text("Edit Service"),
+                  //                           style: TextButton.styleFrom(
+                  //                               primary: AppColor()
+                  //                                   .colorPrimaryDark()),
+                  //                         ),
+                  //                         TextButton.icon(
+                  //                           onPressed: () async {
+                  //                             RemoveServiceModel?
+                  //                             removeModel =
+                  //                             await removeServices(
+                  //                                 vendorModel
+                  //                                     .restaurants![index].resId);
+                  //                             if (removeModel!.responseCode == "1") {
+                  //                               UtilityHlepar.getToast(
+                  //                                   "Service Deleted Successfully!");
+                  //                               setState(() {
+                  //                                 CircularProgressIndicator();
+                  //                                 getVendorAllServices();
+                  //                               });
+                  //                             }
+                  //                           },
+                  //                           icon: Icon(Icons.delete_rounded,
+                  //                               size: 18),
+                  //                           label: Text("Delete"),
+                  //                           style: TextButton.styleFrom(
+                  //                               primary: Colors.green),
+                  //                         ),
+                  //                       ],
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               );
+                  //             },
+                  //           ),
+                  //         )
+                  //             : Container(
+                  //           height: MediaQuery.of(context).size.height/1.5,
+                  //               child: Center(
+                  //           child: Text("No Services Found"),
+                  //         ),
+                  //             );
+                  //       } else if (snapshot.hasError) {
+                  //         return Icon(Icons.error_outline);
+                  //       } else {
+                  //         return Container(
+                  //             height: MediaQuery.of(context).size.height/1.5,
+                  //             child: Center(child: Image.asset("images/icons/loader.gif")));
+                  //       }
+                  //     }),
                   SizedBox(
                     height: 4.02.h,
                   ),
@@ -333,6 +503,8 @@ class _ManageServiceState extends State<ManageService> {
       ),
     );
   }
+
+  VendorServiceModel? vendorServiceModel;
 
   Future getVendorAllServices() async {
     // var userId = await MyToken.getUserID();
@@ -359,16 +531,20 @@ class _ManageServiceState extends State<ManageService> {
     request.fields.addAll({
       'vid': '${userId}'
     });
+    print("checking api with parameter here ${request.fields} and ${request}");
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var finalResult = await response.stream.bytesToString();
-      return VendorServiceModel.fromJson(json.decode(finalResult));
+      //return VendorServiceModel.fromJson(json.decode(finalResult));
+      final jsonResult = VendorServiceModel.fromJson(json.decode(finalResult));
+      setState(() {
+        vendorServiceModel = jsonResult;
+      });
     }
     else {
       print(response.reasonPhrase);
     }
-
   }
 
   Future<RemoveServiceModel?> removeServices(id) async {

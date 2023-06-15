@@ -6,10 +6,13 @@ import 'package:fixerking/fast_splash.dart';
 import 'package:fixerking/modal/request/get_profile_request.dart';
 import 'package:fixerking/modal/response/get_profile_response.dart';
 import 'package:fixerking/screen/Chat_Screen.dart';
+import 'package:fixerking/screen/ReviewPage.dart';
 import 'package:fixerking/screen/availablity.dart';
 import 'package:fixerking/screen/change_password_screen.dart';
+import 'package:fixerking/screen/contactUsPage.dart';
 import 'package:fixerking/screen/main_customer_support.dart';
 import 'package:fixerking/screen/my_wallet.dart';
+import 'package:fixerking/screen/paymentHistory.dart';
 import 'package:fixerking/screen/plan_history.dart';
 import 'package:fixerking/screen/profile/edit_profile_screen.dart';
 import 'package:fixerking/screen/auth_view/login_screen.dart';
@@ -198,7 +201,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                         ),
                                       ),
-                                   snapshot.data!.active_plan == "1" ?   Positioned(
+                                   snapshot.data!.activePlan == "1" ?   Positioned(
                                           right: -5,
                                           top: 1,
                                           child: Container(
@@ -281,9 +284,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 tabItem(context, 1, payment, "Plan History"),
                 // tabItem(context, 2, serviceIcon, "Service History"),
                 tabItem(context, 6, serviceProfile, "Chat With User"),
+                tabItem(context, 8, service, "Reviews"),
                 tabItem(context, 9, payment, "Availability"),
+                tabItem(context, 10, payment, "Payment History"),
                 // tabItem(context, 3, changePass, "Change Password"),
-                tabItem(context, 4, support, "Customer Support"),
+                tabItem(context, 4, support, "Contact Us"),
                 SizedBox(
                   height: 2.5.h,
                 ),
@@ -413,7 +418,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Navigator.push(
               context,
               PageTransition(
-                child: MainCustomerSupport(),
+                child: ContactUsPage(),
                 type: PageTransitionType.rightToLeft,
                 duration: Duration(milliseconds: 500),
               ));
@@ -447,6 +452,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 duration: Duration(milliseconds: 500),
               ));
         }
+        else if(pos == 8){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewPage()));
+        }
+        else if(pos == 10){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentHistory()));
+        }
         if (pos == 9) {
           Navigator.push(
               context,
@@ -456,6 +467,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 duration: Duration(milliseconds: 500),
               ));
         }
+
       },
       child: Container(
           height: 11.25.h,

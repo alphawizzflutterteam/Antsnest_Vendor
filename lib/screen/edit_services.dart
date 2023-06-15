@@ -16,6 +16,7 @@ import 'package:time_picker_sheet/widget/time_picker.dart';
 import '../api/api_path.dart';
 import '../modal/AddServicesModel.dart';
 import '../modal/City_model.dart';
+import '../modal/CurrencyModel.dart';
 import '../modal/ModelCategoryModel.dart';
 import '../modal/ServiceCategoryModel.dart';
 import '../modal/ServiceChildCategoryModel.dart';
@@ -47,7 +48,8 @@ class EditServices extends StatefulWidget {
       city,
       country,
       state,
-  logo,
+      logo,
+  currency,
       serviceDescription;
 
 
@@ -55,18 +57,19 @@ class EditServices extends StatefulWidget {
       {Key? key,
       this.serviceName,
       this.serviceTime,
-        this.logo,
-        this.city,
-        this.country,
-        this.state,
+      this.logo,
+      this.city,
+      this.country,
+      this.state,
       this.serviceCharge,
+      this.currency,
       this.serviceId,
       this.catId,
       this.subCatId,
       this.serviceImage,
       this.subName,
       this.childName,
-        this.experts,
+      this.experts,
       this.serviceDescription})
       : super(key: key);
 
@@ -92,6 +95,7 @@ class _EditServicesState extends State<EditServices> {
   var servicePic;
   var imageList;
   var imagePathList;
+  String? selectedCurrency;
   var storeId;
   DateTime dateTimeSelected = DateTime.now();
   String? selectedCountry;
@@ -223,10 +227,36 @@ class _EditServicesState extends State<EditServices> {
     servicePic = widget.serviceImage;
     selectedCategory = widget.catId;
     selectSubCategory = widget.subCatId;
+    selectedCurrency = widget.currency.toString();
     getCountries();
+    Future.delayed(Duration(milliseconds: 200),(){
+      return getCurrency();
+    });
+  }
+
+  CurrencyModel? currencyModel;
+
+  getCurrency()async{
+    var headers = {
+      'Cookie': 'ci_session=739ff0b92429e4e79523e8467bd7b6590cf83d2b'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('${Apipath.BASH_URL}get_countries'));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      var finalResult = await response.stream.bytesToString();
+      final jsonResult = CurrencyModel.fromJson(json.decode(finalResult));
+      setState(() {
+        currencyModel = jsonResult;
+      });
+    }
+    else {
+      print(response.reasonPhrase);
+    }
   }
   @override
   Widget build(BuildContext context) {
+    print("checking city here now ${widget.city} and ${widget.state}");
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColor().colorBg1(),
@@ -542,100 +572,92 @@ class _EditServicesState extends State<EditServices> {
           SizedBox(
             height: 2.5.h,
           ),
-          Container(
-            width: 80.99.w,
-            height: 7.46.h,
-            decoration: boxDecoration(
-              radius: 10.0,
-              color:AppColor().colorEdit(),
-            ),
-            child:DropdownButtonHideUnderline(
-              child: DropdownButton2(
-                isExpanded: true,
-                hint: Row(
-                  children: [
-                    Image.asset(
-                      city,
-                      width: 6.04.w,
-                      height: 5.04.w,
-                      fit: BoxFit.fill,
-                      color: AppColor.PrimaryDark,
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Select City',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                items: cityList
-                    .map((item) =>
-                    DropdownMenuItem<String>(
-                      value: item.id,
-                      child: Text(
-                        item.name!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight:
-                          FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        overflow:
-                        TextOverflow.ellipsis,
-                      ),
-                    ))
-                    .toList(),
-                value: selectedCity == null ? widget.city : selectedCity,
-                onChanged: (value) {
-                  setState(() {
-                    selectedCity = value as String;
-                    print("selected State===>" +
-                        selectedCity.toString());
-                  });
-                },
-                icon: const Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: AppColor.PrimaryDark,
-                ),
-                iconSize: 14,
-                buttonHeight: 50,
-                buttonWidth: 160,
-                buttonPadding: const EdgeInsets.only(
-                    left: 14, right: 14),
-                buttonDecoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.circular(14),
-                  color:AppColor().colorEdit(),
-                ),
-                buttonElevation: 0,
-                itemHeight: 40,
-                itemPadding: const EdgeInsets.only(
-                    left: 14, right: 14),
-                dropdownMaxHeight: 300,
-                dropdownPadding: null,
-                dropdownDecoration: BoxDecoration(
-                  borderRadius:
-                  BorderRadius.circular(14),
-                ),
-                dropdownElevation: 8,
-                scrollbarRadius:
-                const Radius.circular(40),
-                scrollbarThickness: 6,
-                scrollbarAlwaysShow: true,
+
+        currencyModel == null ? SizedBox() :  Container(
+              width: 80.99.w,
+              height: 7.46.h,
+              decoration: boxDecoration(
+                radius: 10.0,
+                color:  AppColor().colorEdit(),
               ),
-            ),
-          ),
-          SizedBox(
-            height: 2.5.h,
-          ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2(
+                  isExpanded: true,
+                  hint: Row(
+                    children: [
+                      Image.asset(
+                        country,
+                        width: 6.04.w,
+                        height: 5.04.w,
+                        fit: BoxFit.fill,
+                        color: AppColor.PrimaryDark,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Select Currency',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  items: currencyModel!.data!
+                      .map((item) => DropdownMenuItem<String>(
+                    value: item.id,
+                    child: Text(
+                      item.currency.toString(),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ))
+                      .toList(),
+                  value: selectedCurrency == null ? widget.currency : selectedCurrency,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCurrency = value as String;
+                      print("selectedCategory=>" +
+                          selectedCurrency.toString());
+                      getState();
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.arrow_forward_ios_outlined,
+                    color: AppColor.PrimaryDark,
+                  ),
+                  iconSize: 14,
+                  buttonHeight: 50,
+                  buttonWidth: 160,
+                  buttonPadding:
+                  const EdgeInsets.only(left: 14, right: 14),
+                  buttonDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    color: AppColor().colorEdit(),
+                  ),
+                  buttonElevation: 0,
+                  itemHeight: 40,
+                  itemPadding:
+                  const EdgeInsets.only(left: 14, right: 14),
+                  dropdownMaxHeight: 300,
+                  dropdownPadding: null,
+                  dropdownDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  dropdownElevation: 8,
+                  scrollbarRadius: const Radius.circular(40),
+                  scrollbarThickness: 6,
+                  scrollbarAlwaysShow: true,
+                ),
+              )),
           SizedBox(
             height: 2.5.h,
           ),
@@ -1101,6 +1123,7 @@ class _EditServicesState extends State<EditServices> {
                       'country_id': "${selectedCountry.toString()}",
                       "state_id":"${selectedCity.toString()}",
                       "city_id":"${selectedCity.toString()}",
+                      "currency": "${selectedCurrency}"
                     };
                     print("ADD SERVICE PARAM=====" + param.toString());
                     AddServicesModel addModel = await editServices(param);

@@ -1,10 +1,7 @@
-import 'dart:convert';
 /// response_code : "1"
 /// msg : "Latest posts"
-/// data : [{"id":"6","user_id":"31","cat_id":"42","sub_cat_id":"58","note":"video editing","location":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","date":"2022-10-15","budget":"865.00","status":"0","created_at":"2022-10-15 18:33:24","updated_at":"2022-10-15 18:33:24","rejected_by":null,"accepted_by":null},{"id":"4","user_id":"31","cat_id":"44","sub_cat_id":"62","note":"test service ","location":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","date":"2022-10-15","budget":"440.00","status":"1","created_at":"2022-10-15 17:40:41","updated_at":"2022-10-15 18:43:58","rejected_by":null,"accepted_by":null},{"id":"3","user_id":"4","cat_id":"42","sub_cat_id":"58","note":"This is service request","location":"Indore, Madhya Pradesh, India, 452003","date":"2022-10-15","budget":"20000.00","status":"0","created_at":"2022-10-15 17:33:21","updated_at":"2022-10-15 17:33:21","rejected_by":null,"accepted_by":null},{"id":"2","user_id":"4","cat_id":"42","sub_cat_id":"58","note":"This is service request","location":"Indore, Madhya Pradesh, India, 452003","date":"2022-10-15","budget":"20000.00","status":"0","created_at":"2022-10-15 17:03:54","updated_at":"2022-10-15 17:03:54","rejected_by":null,"accepted_by":null},{"id":"1","user_id":"4","cat_id":"42","sub_cat_id":"58","note":"This is service request","location":"Indore, Madhya Pradesh, India, 452003","date":"2022-10-15","budget":"20000.00","status":"0","created_at":"2022-10-15 16:58:35","updated_at":"2022-10-15 16:58:35","rejected_by":null,"accepted_by":null}]
+/// data : [{"username":"Shiva Sharma","id":"37","user_id":"31","cat_id":"44","sub_cat_id":"82","note":"haircut","location":"Vijay Nagar, Indore, Madhya Pradesh 452010, India, 45","date":"2023-06-07","budget":"500.00","status":"0","created_at":"2023-06-06 08:06:46","updated_at":"2023-06-06 08:14:04","rejected_by":null,"accepted_by":"34,87","currency_code":"3","country":"3","state":"115","city":"108"}]
 
-LatestPostModel latestPostModelFromJson(String str) => LatestPostModel.fromJson(json.decode(str));
-String latestPostModelToJson(LatestPostModel data) => json.encode(data.toJson());
 class LatestPostModel {
   LatestPostModel({
       String? responseCode, 
@@ -51,24 +48,28 @@ LatestPostModel copyWith({  String? responseCode,
 
 }
 
-/// id : "6"
+/// username : "Shiva Sharma"
+/// id : "37"
 /// user_id : "31"
-/// cat_id : "42"
-/// sub_cat_id : "58"
-/// note : "video editing"
-/// location : "G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101"
-/// date : "2022-10-15"
-/// budget : "865.00"
+/// cat_id : "44"
+/// sub_cat_id : "82"
+/// note : "haircut"
+/// location : "Vijay Nagar, Indore, Madhya Pradesh 452010, India, 45"
+/// date : "2023-06-07"
+/// budget : "500.00"
 /// status : "0"
-/// created_at : "2022-10-15 18:33:24"
-/// updated_at : "2022-10-15 18:33:24"
+/// created_at : "2023-06-06 08:06:46"
+/// updated_at : "2023-06-06 08:14:04"
 /// rejected_by : null
-/// accepted_by : null
+/// accepted_by : "34,87"
+/// currency_code : "3"
+/// country : "3"
+/// state : "115"
+/// city : "108"
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
 class Data {
   Data({
+      String? username, 
       String? id, 
       String? userId, 
       String? catId, 
@@ -81,7 +82,12 @@ class Data {
       String? createdAt, 
       String? updatedAt, 
       dynamic rejectedBy, 
-      dynamic acceptedBy,}){
+      String? acceptedBy, 
+      String? currencyCode, 
+      String? country, 
+      String? state, 
+      String? city,}){
+    _username = username;
     _id = id;
     _userId = userId;
     _catId = catId;
@@ -95,9 +101,14 @@ class Data {
     _updatedAt = updatedAt;
     _rejectedBy = rejectedBy;
     _acceptedBy = acceptedBy;
+    _currencyCode = currencyCode;
+    _country = country;
+    _state = state;
+    _city = city;
 }
 
   Data.fromJson(dynamic json) {
+    _username = json['username'];
     _id = json['id'];
     _userId = json['user_id'];
     _catId = json['cat_id'];
@@ -111,7 +122,12 @@ class Data {
     _updatedAt = json['updated_at'];
     _rejectedBy = json['rejected_by'];
     _acceptedBy = json['accepted_by'];
+    _currencyCode = json['currency_code'];
+    _country = json['country'];
+    _state = json['state'];
+    _city = json['city'];
   }
+  String? _username;
   String? _id;
   String? _userId;
   String? _catId;
@@ -124,8 +140,13 @@ class Data {
   String? _createdAt;
   String? _updatedAt;
   dynamic _rejectedBy;
-  dynamic _acceptedBy;
-Data copyWith({  String? id,
+  String? _acceptedBy;
+  String? _currencyCode;
+  String? _country;
+  String? _state;
+  String? _city;
+Data copyWith({  String? username,
+  String? id,
   String? userId,
   String? catId,
   String? subCatId,
@@ -137,8 +158,13 @@ Data copyWith({  String? id,
   String? createdAt,
   String? updatedAt,
   dynamic rejectedBy,
-  dynamic acceptedBy,
-}) => Data(  id: id ?? _id,
+  String? acceptedBy,
+  String? currencyCode,
+  String? country,
+  String? state,
+  String? city,
+}) => Data(  username: username ?? _username,
+  id: id ?? _id,
   userId: userId ?? _userId,
   catId: catId ?? _catId,
   subCatId: subCatId ?? _subCatId,
@@ -151,7 +177,12 @@ Data copyWith({  String? id,
   updatedAt: updatedAt ?? _updatedAt,
   rejectedBy: rejectedBy ?? _rejectedBy,
   acceptedBy: acceptedBy ?? _acceptedBy,
+  currencyCode: currencyCode ?? _currencyCode,
+  country: country ?? _country,
+  state: state ?? _state,
+  city: city ?? _city,
 );
+  String? get username => _username;
   String? get id => _id;
   String? get userId => _userId;
   String? get catId => _catId;
@@ -164,10 +195,15 @@ Data copyWith({  String? id,
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   dynamic get rejectedBy => _rejectedBy;
-  dynamic get acceptedBy => _acceptedBy;
+  String? get acceptedBy => _acceptedBy;
+  String? get currencyCode => _currencyCode;
+  String? get country => _country;
+  String? get state => _state;
+  String? get city => _city;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['username'] = _username;
     map['id'] = _id;
     map['user_id'] = _userId;
     map['cat_id'] = _catId;
@@ -181,6 +217,10 @@ Data copyWith({  String? id,
     map['updated_at'] = _updatedAt;
     map['rejected_by'] = _rejectedBy;
     map['accepted_by'] = _acceptedBy;
+    map['currency_code'] = _currencyCode;
+    map['country'] = _country;
+    map['state'] = _state;
+    map['city'] = _city;
     return map;
   }
 

@@ -1555,6 +1555,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:fixerking/api/api_helper/ApiList.dart';
+import 'package:fixerking/modal/CurrencyModel.dart';
 import 'package:fixerking/modal/ModelCategoryModel.dart';
 import 'package:fixerking/modal/New%20models/VerifyUserModel.dart';
 import 'package:fixerking/modal/New%20models/VerifyUserPlanModel.dart';
@@ -1611,6 +1612,8 @@ class _AddServicesState extends State<AddServices> {
 
   TextEditingController serviceLocation = TextEditingController();
   TextEditingController serviceOfferedController = TextEditingController();
+  TextEditingController hourdayController =  TextEditingController();
+  String? selctedHourDay;
 
   bool buttonLogin = false;
   String? selectedCategory, selectSubCategory, selectChildCategory, selectModel;
@@ -1618,6 +1621,7 @@ class _AddServicesState extends State<AddServices> {
   String? visitingCharge;
   String? issue;
   var imagePathList;
+  String? selectedMainCurrency;
   List serviceTypeId = [];
   List specilizationTypeId = [];
   List<StateData> stateList = [];
@@ -1633,6 +1637,21 @@ class _AddServicesState extends State<AddServices> {
   String showImage = '';
   String service_price = "";
   String service_name = "";
+
+  TextEditingController hourController = TextEditingController();
+  String? selectedAddonService;
+  String? selectedHourDay;
+
+  List<String> addonServiceList = [
+    "Basic",
+    "Standard",
+    "Premium"
+  ];
+
+  List<String> hourDayList = [
+    "Hour",
+    "Day"
+  ];
 
   Future getState() async {
     var request = http.MultipartRequest(
@@ -1714,12 +1733,36 @@ class _AddServicesState extends State<AddServices> {
 
   List<dynamic> addonList = [];
 
+    CurrencyModel? currencyModel;
+      String? selectedCurrency;
+  getCurrency()async{
+    var headers = {
+      'Cookie': 'ci_session=739ff0b92429e4e79523e8467bd7b6590cf83d2b'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse('${Apipath.BASH_URL}get_countries'));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      var finalResult = await response.stream.bytesToString();
+      final jsonResult = CurrencyModel.fromJson(json.decode(finalResult));
+      setState(() {
+        currencyModel = jsonResult;
+      });
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getVerifyUser();
     getCountries();
+    Future.delayed(Duration(milliseconds: 200),(){
+      return getCurrency();
+    });
   }
 
   String? isPlanAvailable;
@@ -2153,6 +2196,208 @@ class _AddServicesState extends State<AddServices> {
                     selectedCity = value as String;
                     print("selected State===>" + selectedCity.toString());
                   });
+                },
+                icon: const Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: AppColor.PrimaryDark,
+                ),
+                iconSize: 14,
+                buttonHeight: 50,
+                buttonWidth: 160,
+                buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                buttonDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: AppColor().colorEdit(),
+                ),
+                buttonElevation: 0,
+                itemHeight: 40,
+                itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                dropdownMaxHeight: 300,
+                dropdownPadding: null,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                dropdownElevation: 8,
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 2.5.h,
+          ),
+        currencyModel == null ? SizedBox() :  Container(
+            width: 80.99.w,
+            height: 7.46.h,
+            decoration: boxDecoration(
+              radius: 10.0,
+              color: AppColor().colorEdit(),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton2(
+                isExpanded: true,
+                hint: Row(
+                  children: [
+                    Image.asset(
+                      city,
+                      width: 6.04.w,
+                      height: 5.04.w,
+                      fit: BoxFit.fill,
+                      color: AppColor.PrimaryDark,
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Select Currency',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                items: currencyModel!.data!
+                    .map((item) => DropdownMenuItem<String>(
+                  value: item.id,
+                  child: Text(
+                    item.currency!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
+                    .toList(),
+                value: selectedMainCurrency,
+                onChanged: (value) {
+                  setState(() {
+                    selectedMainCurrency = value as String;
+                    print("selected State===>" + selectedMainCurrency.toString());
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: AppColor.PrimaryDark,
+                ),
+                iconSize: 14,
+                buttonHeight: 50,
+                buttonWidth: 160,
+                buttonPadding: const EdgeInsets.only(left: 14, right: 14),
+                buttonDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: AppColor().colorEdit(),
+                ),
+                buttonElevation: 0,
+                itemHeight: 40,
+                itemPadding: const EdgeInsets.only(left: 14, right: 14),
+                dropdownMaxHeight: 300,
+                dropdownPadding: null,
+                dropdownDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                dropdownElevation: 8,
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 6,
+                scrollbarAlwaysShow: true,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 2.5.h,
+          ),
+          Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.0)),
+            color: AppColor().colorEdit(),
+            child: Container(
+                width: 80.99.w,
+                height: 7.46.h,
+                decoration: boxDecoration(
+                  radius: 14.0,
+                  bgColor: AppColor().colorEdit(),
+                ),
+                child: TextFormField(
+                  controller: hourdayController,
+                  // maxLines: 2,
+                  keyboardType: TextInputType.number,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    hintText: "Enter hours / days",
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.symmetric(horizontal: 15.0, vertical: 16),
+                    prefixIcon: Icon(
+                      Icons.description,
+                      color: AppColor.PrimaryDark,
+                    ),
+                  ),
+                )),
+          ),
+          SizedBox(height: 2.5.h,),
+          Container(
+            width: 80.99.w,
+            height: 7.46.h,
+            decoration: boxDecoration(
+              radius: 10.0,
+             // color: AppColor().colorEdit(),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton2(
+                isExpanded: true,
+                hint: Row(
+                  children: [
+                    Image.asset(
+                      city,
+                      width: 6.04.w,
+                      height: 5.04.w,
+                      fit: BoxFit.fill,
+                      color: AppColor.PrimaryDark,
+                    ),
+
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Select Hours / Days',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                items: ['Hours','Days']
+                    .map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item.toString(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ))
+                    .toList(),
+                value: selctedHourDay,
+                onChanged: (value) {
+                  setState(() {
+                    selctedHourDay = value as String;
+                    print("selected State===>" + selctedHourDay.toString());
+                  });
+                  getCities();
                 },
                 icon: const Icon(
                   Icons.arrow_forward_ios_outlined,
@@ -2673,26 +2918,33 @@ class _AddServicesState extends State<AddServices> {
                 Container(
                     child:Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Name",style: TextStyle(color: AppColor.PrimaryDark,fontWeight: FontWeight.w500,),),
                           Text("Price",style: TextStyle(color: AppColor.PrimaryDark,fontWeight: FontWeight.w500,),),
-                          Text("    "),
+                          Text("Hour/Day",style: TextStyle(color: AppColor.PrimaryDark,fontWeight: FontWeight.w500,),),
+                          Text("Value",style: TextStyle(color: AppColor.PrimaryDark,fontWeight: FontWeight.w500,),),
+
                         ],
                     ) 
                 ),
                 SizedBox(height: 10,),
                 ListView.builder(
+                   // padding: EdgeInsets.symmetric(horizontal: 30),
                     shrinkWrap: true,
                     itemCount: addonList.length,
                     itemBuilder: (c,i){
+                      print("addon list here ${addonList}");
                   return Container(
                   margin: EdgeInsets.only(top: 5),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("${addonList[i]['serviceName']}"),
-                        Text("\u{20B9} ${addonList[i]['addonPrice']}"),
-                        Text(" "),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [  
+                        Expanded(child: Text("${addonList[i]['service']}")),
+                        Expanded(child: Text("\u{20B9} ${addonList[i]['price_a']}")), 
+                        Expanded(child: Text("${addonList[i]['hrly']}")),
+                        Text("${addonList[i]['days_hrs']}"),
                         // InkWell(
                         //     onTap: (){
                         //       setState(() {
@@ -2700,7 +2952,7 @@ class _AddServicesState extends State<AddServices> {
                         //         addonList.removeAt(addonList[i]['addonPrice']);
                         //       });
                         //     },
-                        //     child: Icon(Icons.clear)),
+                        //     child: Icon(Icons.clear)),  
                       ],
                     ),
                   );
@@ -2723,41 +2975,149 @@ class _AddServicesState extends State<AddServices> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: addonServiceController,
-                                    decoration: InputDecoration(
-                                        hintText: "Enter Service name",
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10))),
+                                Expanded(child:   Container(
+                                  decoration:BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9),
+                                      border: Border.all(color: Colors.grey)
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                  child: DropdownButton(
+                                    // Initial Value
+                                    value: selectedAddonService,
+                                    underline: Container(),
+                                    hint: Padding(
+                                      padding:  EdgeInsets.only(left: 10),
+                                      child: Text("Addon"),
+                                    ),
+                                    // Down Arrow Icon
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                                    // Array list of items
+                                    items: addonServiceList.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    // After selecting the desired option,it will
+                                    // change button value to selected value
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedAddonService = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),),
+                                SizedBox(width: 10,),
                                 Expanded(
                                   child: TextField(
                                     controller: addonPriceController,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
-                                        hintText: "Enter price",
+                                        hintText: "Charge",
                                         border: OutlineInputBorder(
                                             borderRadius:
-                                                BorderRadius.circular(10))),
+                                            BorderRadius.circular(10))),
                                   ),
                                 ),
+
+                                SizedBox(
+                                  width: 10,
+                                ),
+
                               ],
                             ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: TextField(
+                                     controller: hourController,
+                                    decoration: InputDecoration(
+                                        hintText: "Hour / Day",
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(10))),
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                Expanded(child:   Container(
+                                  decoration:BoxDecoration(
+                                      borderRadius: BorderRadius.circular(9),
+                                      border: Border.all(color: Colors.grey)
+                                  ),
+                                  child: DropdownButton(
+                                    underline: Container(),
+                                    hint: Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Text("Select..."),
+                                    ),
+                                    // Initial Value
+                                    value: selectedHourDay,
+                                    // Down Arrow Icon
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    // Array list of items
+                                    items: hourDayList.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    // After selecting the desired option,it will
+                                    // change button value to selected value
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedHourDay = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),)
+                              ],
+                            ),
+                                SizedBox(height: 10,),
+                                currencyModel== null ? SizedBox() :
+                                Container(
+                                decoration:BoxDecoration(
+                                  borderRadius: BorderRadius.circular(9),
+                                  border: Border.all(color: Colors.grey)
+                              ),
+                              child: DropdownButton(
+                                underline: Container(),
+                                hint: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Currency"),
+                                ),
+                                // Initial Value
+                                value: selectedCurrency,
+                                // Down Arrow Icon
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                // Array list of items
+                                items: currencyModel!.data!.map(( items) {
+                                  return DropdownMenuItem(
+                                    value: items.id,
+                                    child: Text(items.currency.toString()),
+                                  );
+                                }).toList(),
+                                // After selecting the desired option,it will
+                                // change button value to selected value
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedCurrency = newValue!;
+                                  });
+                                },
+                              ),
+                            ),
                             InkWell(
-                              onTap: (){
+                              onTap: ()async{
                                 setState((){
-                                  addonList.add({"serviceName":addonServiceController.text,"addonPrice":addonPriceController.text});
+                                  addonList.add({"service":selectedAddonService,"price_a":addonPriceController.text,"currency" :selectedCurrency.toString(),"hrly":selectedHourDay,"days_hrs":hourController.text});
                                 });
                                 print("okokok ${addonList.toString()}");
                                 addonPriceController.clear();
                                 addonServiceController.clear();
-                                Navigator.of(context).pop();
+                                hourdayController.clear();
+                                // selectedHourDay = null;
+                                selectedAddonService = null;
+                                Navigator.of(context).pop(true);
                               },
                               child: Container(
                                 margin: EdgeInsets.only(top: 10),
@@ -2871,15 +3231,16 @@ class _AddServicesState extends State<AddServices> {
                       'vid': '$userId',
                       'price': '${serviceCharge.text.toString()}',
                       'country_id': "${selectedCountry.toString()}",
-                      "state_id": "${selectedCity.toString()}",
+                      "state_id": "${selectedState.toString()}",
                       "city_id": "${selectedCity.toString()}",
                       "service_offered": "${serviceOfferedController.text}",
+                      "hourdayValue":hourdayController.text,
+                      "hourdayvalue1": selctedHourDay.toString(),
+                      "currency": selectedMainCurrency.toString(),
                       "addon":'${addonList}',
                     };
-                    // for(var i=0;i<imagePathList.length;i++){
-                    //   request.files.add(
-                    //       await http.MultipartFile.fromPath('res_image[]', imagePathList[i].toString()));
-                    // }
+
+
                     print("ADD SERVICE PARAM=====" + param.toString());
                     AddServicesModel addModel = await addServices(param);
                     if (addModel.responseCode == "1") {

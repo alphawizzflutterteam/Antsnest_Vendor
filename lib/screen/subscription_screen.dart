@@ -34,6 +34,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     super.initState();
     // getUserDetails();
     //UNCOMMENT
+    Future.delayed(Duration(milliseconds: 200),(){
+      return getPlans();
+    });
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -56,212 +59,401 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         backgroundColor: AppColor.PrimaryDark,
         title: Text("Subscription Plans"),
       ),
-      body: FutureBuilder(
-          future: getPlans(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              PlansModel data = snapshot.data;
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // shrinkWrap: true,
-                  children: [
-                    SizedBox(height: 50,),
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlayInterval: const Duration(seconds: 8),
-                        autoPlay: true,
-                        aspectRatio: .5,
-                        enlargeCenterPage: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      ),
-                      items: data.data!
-                          .map<Widget>((item) => Container(
-                        child: Container(
-                          margin: EdgeInsets.all(5.0),
-                          child: ClipRRect(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(5.0)),
-                              child: Stack(
-                                children: <Widget>[
-                                  Column(
-                                    children: [
-                                      Card(
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            // ListTile(
-                                            //   title: Center(
-                                            //     child: Text(
-                                            //       "${item.title}",
-                                            //       style: TextStyle(
-                                            //           fontWeight:
-                                            //           FontWeight.bold),
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                          item.price == 0 ? SizedBox.shrink() :  Align(
-                                              alignment: Alignment.topRight,
-                                              child: Container(
-                                              height: 110,
-                                              width: 110,
-                                                padding: EdgeInsets.only(top: 15),
-                                                alignment: Alignment.topRight,
-                                                  decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      stops: [.5, .5],
-                                                      begin: Alignment.bottomLeft,
-                                                      end: Alignment.topRight,
-                                                      colors: [
-                                                        Colors.transparent,
-                                                        Colors.red, // top Right part
-                                                      ],
-                                                    ),
-                                                  ),
-                                                child: Transform.rotate(
-                                                    angle: math.pi / 4,
-                                                    // alignment: FractionalOffset.topRight,
-                                                    // transform: new Matrix4.identity()..rotateZ(20 * 10.1415927 / 120),
-                                                    child: Text("AN\nRecommended",style: TextStyle(color: Colors.white,fontSize: 15,),textAlign: TextAlign.center,)),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            Text(
-                                              "${item.title}",
-                                              style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text("₹ ${item.price.toString()}" , style: TextStyle(
-                                                fontWeight: FontWeight.bold , fontSize: 24,
-                                                color: AppColor().colorPrimary()
-                                            ),),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              "${item.timeText}",
-                                              style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.w600),
-                                            ),
-                                            // SizedBox(
-                                            //   height: 10,
-                                            // ),
-                                            // Text(
-                                            //   "${item.planType}",
-                                            //   style: TextStyle(
-                                            //       fontWeight:
-                                            //       FontWeight.w600),
-                                            // ),
-                                            Divider(
-                                              color: AppColor()
-                                                  .colorPrimary(),
-                                            ),
-                                            // SizedBox(
-                                            //   height: 20,
-                                            // ),
-                                            // Container(
-                                            //   height: 200,
-                                            //   child: Image.network(item.image!,
-                                            //     fit: BoxFit.cover,
-                                            //   ),
-                                            // ),
-
-                                            ListView.builder(
-                                              padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                                                shrinkWrap: true,
-                                                itemCount: item.json!.length,
-                                                itemBuilder: (c,i){
-                                              return Padding(
-                                                padding: EdgeInsets.only(bottom: 5),
-                                                child: Row(
-                                                  children: [
-                                                   item.json![i].isTrue == 0 ? Container(
-                                                      decoration:BoxDecoration(
-                                                        border: Border.all(color: Colors.black)
-                                                      ),
-                                                      child: Icon(Icons.clear,size: 13,),) :
-                                                       Container(
-                                                         decoration:BoxDecoration(
-                                                           borderRadius: BorderRadius.circular(100),
-                                                           border: Border.all(color: Colors.black)
-                                                         ),
-                                                         child: Icon(Icons.check,size: 13,),
-                                                       ),
-                                                    SizedBox(width: 6,),
-                                                    Text("${item.json![i].title}")
-                                                  ],
-                                                ),
-                                              );
-                                            }),
-                                          ],
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // shrinkWrap: true,
+          children: [
+            SizedBox(height: 50,),
+          plansModel == null ? CircularProgressIndicator() :  CarouselSlider(
+              options: CarouselOptions(
+                autoPlayInterval: const Duration(seconds: 4),
+                autoPlay: true,
+                aspectRatio: .5,
+                enlargeCenterPage: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+              ),
+              items: plansModel!.data!
+                  .map<Widget>((item) => Container(
+                child: Container(
+                  margin: EdgeInsets.all(5.0),
+                  child: ClipRRect(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              Card(
+                                elevation: 5,
+                                child: Column(
+                                  children: [
+                                    // ListTile(
+                                    //   title: Center(
+                                    //     child: Text(
+                                    //       "${item.title}",
+                                    //       style: TextStyle(
+                                    //           fontWeight:
+                                    //           FontWeight.bold),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                    item.price == 0 ? SizedBox.shrink() :  Align(
+                                      alignment: Alignment.topRight,
+                                      child: Container(
+                                        height: 110,
+                                        width: 110,
+                                        padding: EdgeInsets.only(top: 15),
+                                        alignment: Alignment.topRight,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            stops: [.5, .5],
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            colors: [
+                                              Colors.transparent,
+                                              Colors.red, // top Right part
+                                            ],
+                                          ),
                                         ),
+                                        child: Transform.rotate(
+                                            angle: math.pi / 4,
+                                            // alignment: FractionalOffset.topRight,
+                                            // transform: new Matrix4.identity()..rotateZ(20 * 10.1415927 / 120),
+                                            child: Text("AN\nRecommended",style: TextStyle(color: Colors.white,fontSize: 15,),textAlign: TextAlign.center,)),
                                       ),
-                                      ElevatedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                              MaterialStateProperty
-                                                  .all(AppColor()
-                                                  .colorPrimary())),
-                                          onPressed: ()async{
-                                            if(item.price == 0 || item.price == "0" ){
-                                             // Fluttertoast.showToast(msg: "Plan amount is not valid");
-                                              purchasePlan("$userId", planI,"");
-                                            }
-                                            else{
-                                              checkOut(item.price);
-                                            }
-                                            // var userId = await MyToken.getUserID();
-                                            // print("purchase Plan");
-                                            // // print("purchase Plan2 ==== $price");
-                                            // // price = int.parse(item.price.toString()) * 100;
-                                            // amounts = item.price;
-                                            // print("purchase Plan3 ==== $amounts");
-                                            // planI = item.id.toString();
-                                            // if(item.price.toString() == "0" || item.price == 0){
-                                            //   purchasePlan(userId.toString(),planI.toString(),"");
-                                            // }
-                                            // else{
-                                            //   checkOut(amounts);
-                                            // }
-                                          },
-                                          child: Text("Purchase"))
-                                    ],
-                                  )
-                                ],
-                              )),
-                        ),
-                      ))
-                          .toList(),
-                    ),
-                  ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      "${item.title}",
+                                      style: TextStyle(
+                                          fontWeight:
+                                          FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("₹ ${item.price.toString()}" , style: TextStyle(
+                                        fontWeight: FontWeight.bold , fontSize: 24,
+                                        color: AppColor().colorPrimary()
+                                    ),),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${item.timeText}",
+                                      style: TextStyle(
+                                          fontWeight:
+                                          FontWeight.w600),
+                                    ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    // Text(
+                                    //   "${item.planType}",
+                                    //   style: TextStyle(
+                                    //       fontWeight:
+                                    //       FontWeight.w600),
+                                    // ),
+                                    Divider(
+                                      color: AppColor()
+                                          .colorPrimary(),
+                                    ),
+                                    // SizedBox(
+                                    //   height: 20,
+                                    // ),
+                                    // Container(
+                                    //   height: 200,
+                                    //   child: Image.network(item.image!,
+                                    //     fit: BoxFit.cover,
+                                    //   ),
+                                    // ),
+
+                                    ListView.builder(
+                                        padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                                        shrinkWrap: true,
+                                        itemCount: item.json!.length,
+                                        itemBuilder: (c,i){
+                                          return Padding(
+                                            padding: EdgeInsets.only(bottom: 5),
+                                            child: Row(
+                                              children: [
+                                                item.json![i].isTrue == 0 ? Container(
+                                                  decoration:BoxDecoration(
+                                                      border: Border.all(color: Colors.black)
+                                                  ),
+                                                  child: Icon(Icons.clear,size: 13,),) :
+                                                Container(
+                                                  decoration:BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(100),
+                                                      border: Border.all(color: Colors.black)
+                                                  ),
+                                                  child: Icon(Icons.check,size: 13,),
+                                                ),
+                                                SizedBox(width: 6,),
+                                                Text("${item.json![i].title}")
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ],
+                                ),
+                              ),
+                              ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                      MaterialStateProperty
+                                          .all(AppColor()
+                                          .colorPrimary())),
+                                  onPressed: ()async{
+                                     var userId = await MyToken.getUserID();
+                                      planI = item.id.toString();
+                                    if(item.price == 0 || item.price == "0" ){
+                                      // Fluttertoast.showToast(msg: "Plan amount is not valid");
+                                      purchasePlan("$userId", planI,"");
+                                    }
+                                    else{
+                                      checkOut(item.price);
+                                    }
+                                    // var userId = await MyToken.getUserID();
+                                    // print("purchase Plan");
+                                    // // print("purchase Plan2 ==== $price");
+                                    // // price = int.parse(item.price.toString()) * 100;
+                                    // amounts = item.price;
+                                    // print("purchase Plan3 ==== $amounts");
+                                    // planI = item.id.toString();
+                                    // if(item.price.toString() == "0" || item.price == 0){
+                                    //   purchasePlan(userId.toString(),planI.toString(),"");
+                                    // }
+                                    // else{
+                                    //   checkOut(amounts);
+                                    // }
+                                  },
+                                  child: Text("Purchase"))
+                            ],
+                          )
+                        ],
+                      )),
                 ),
-              );
-            } else if (snapshot.hasError) {
-              print("ERROR ==== ${snapshot.error}");
-              return Center(child: Icon(Icons.error_outline));
-            } else {
-              return Center(child: Image.asset("images/icons/loader.gif"));
-            }
-          }),
+              ))
+                  .toList(),
+            ),
+          ],
+        ),
+      ),
+      // body: FutureBuilder(
+      //     future: getPlans(),
+      //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+      //       print("checking snapshot data  ${snapshot}");
+      //       if (snapshot.hasData) {
+      //         PlansModel data = snapshot.data;
+      //         return SingleChildScrollView(
+      //           child: Column(
+      //             mainAxisAlignment: MainAxisAlignment.center,
+      //             // shrinkWrap: true,
+      //             children: [
+      //               SizedBox(height: 50,),
+      //               CarouselSlider(
+      //                 options: CarouselOptions(
+      //                   autoPlayInterval: const Duration(seconds: 8),
+      //                   autoPlay: true,
+      //                   aspectRatio: .5,
+      //                   enlargeCenterPage: true,
+      //                   enlargeStrategy: CenterPageEnlargeStrategy.height,
+      //                 ),
+      //                 items: data.data!
+      //                     .map<Widget>((item) => Container(
+      //                   child: Container(
+      //                     margin: EdgeInsets.all(5.0),
+      //                     child: ClipRRect(
+      //                         borderRadius:
+      //                         BorderRadius.all(Radius.circular(5.0)),
+      //                         child: Stack(
+      //                           children: <Widget>[
+      //                             Column(
+      //                               children: [
+      //                                 Card(
+      //                                   elevation: 5,
+      //                                   child: Column(
+      //                                     children: [
+      //                                       // ListTile(
+      //                                       //   title: Center(
+      //                                       //     child: Text(
+      //                                       //       "${item.title}",
+      //                                       //       style: TextStyle(
+      //                                       //           fontWeight:
+      //                                       //           FontWeight.bold),
+      //                                       //     ),
+      //                                       //   ),
+      //                                       // ),
+      //                                     item.price == 0 ? SizedBox.shrink() :  Align(
+      //                                         alignment: Alignment.topRight,
+      //                                         child: Container(
+      //                                         height: 110,
+      //                                         width: 110,
+      //                                           padding: EdgeInsets.only(top: 15),
+      //                                           alignment: Alignment.topRight,
+      //                                             decoration: BoxDecoration(
+      //                                               gradient: LinearGradient(
+      //                                                 stops: [.5, .5],
+      //                                                 begin: Alignment.bottomLeft,
+      //                                                 end: Alignment.topRight,
+      //                                                 colors: [
+      //                                                   Colors.transparent,
+      //                                                   Colors.red, // top Right part
+      //                                                 ],
+      //                                               ),
+      //                                             ),
+      //                                           child: Transform.rotate(
+      //                                               angle: math.pi / 4,
+      //                                               // alignment: FractionalOffset.topRight,
+      //                                               // transform: new Matrix4.identity()..rotateZ(20 * 10.1415927 / 120),
+      //                                               child: Text("AN\nRecommended",style: TextStyle(color: Colors.white,fontSize: 15,),textAlign: TextAlign.center,)),
+      //                                         ),
+      //                                       ),
+      //                                       SizedBox(
+      //                                         height: 20,
+      //                                       ),
+      //                                       Text(
+      //                                         "${item.title}",
+      //                                         style: TextStyle(
+      //                                             fontWeight:
+      //                                             FontWeight.bold),
+      //                                       ),
+      //                                       SizedBox(
+      //                                         height: 10,
+      //                                       ),
+      //                                       Text("₹ ${item.price.toString()}" , style: TextStyle(
+      //                                           fontWeight: FontWeight.bold , fontSize: 24,
+      //                                           color: AppColor().colorPrimary()
+      //                                       ),),
+      //                                       SizedBox(
+      //                                         height: 10,
+      //                                       ),
+      //                                       Text(
+      //                                         "${item.timeText}",
+      //                                         style: TextStyle(
+      //                                             fontWeight:
+      //                                             FontWeight.w600),
+      //                                       ),
+      //                                       // SizedBox(
+      //                                       //   height: 10,
+      //                                       // ),
+      //                                       // Text(
+      //                                       //   "${item.planType}",
+      //                                       //   style: TextStyle(
+      //                                       //       fontWeight:
+      //                                       //       FontWeight.w600),
+      //                                       // ),
+      //                                       Divider(
+      //                                         color: AppColor()
+      //                                             .colorPrimary(),
+      //                                       ),
+      //                                       // SizedBox(
+      //                                       //   height: 20,
+      //                                       // ),
+      //                                       // Container(
+      //                                       //   height: 200,
+      //                                       //   child: Image.network(item.image!,
+      //                                       //     fit: BoxFit.cover,
+      //                                       //   ),
+      //                                       // ),
+      //
+      //                                       ListView.builder(
+      //                                         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+      //                                           shrinkWrap: true,
+      //                                           itemCount: item.json!.length,
+      //                                           itemBuilder: (c,i){
+      //                                         return Padding(
+      //                                           padding: EdgeInsets.only(bottom: 5),
+      //                                           child: Row(
+      //                                             children: [
+      //                                              item.json![i].isTrue == 0 ? Container(
+      //                                                 decoration:BoxDecoration(
+      //                                                   border: Border.all(color: Colors.black)
+      //                                                 ),
+      //                                                 child: Icon(Icons.clear,size: 13,),) :
+      //                                                  Container(
+      //                                                    decoration:BoxDecoration(
+      //                                                      borderRadius: BorderRadius.circular(100),
+      //                                                      border: Border.all(color: Colors.black)
+      //                                                    ),
+      //                                                    child: Icon(Icons.check,size: 13,),
+      //                                                  ),
+      //                                               SizedBox(width: 6,),
+      //                                               Text("${item.json![i].title}")
+      //                                             ],
+      //                                           ),
+      //                                         );
+      //                                       }),
+      //                                     ],
+      //                                   ),
+      //                                 ),
+      //                                 ElevatedButton(
+      //                                     style: ButtonStyle(
+      //                                         backgroundColor:
+      //                                         MaterialStateProperty
+      //                                             .all(AppColor()
+      //                                             .colorPrimary())),
+      //                                     onPressed: ()async{
+      //                                       if(item.price == 0 || item.price == "0" ){
+      //                                        // Fluttertoast.showToast(msg: "Plan amount is not valid");
+      //                                         purchasePlan("$userId", planI,"");
+      //                                       }
+      //                                       else{
+      //                                         checkOut(item.price);
+      //                                       }
+      //                                       // var userId = await MyToken.getUserID();
+      //                                       // print("purchase Plan");
+      //                                       // // print("purchase Plan2 ==== $price");
+      //                                       // // price = int.parse(item.price.toString()) * 100;
+      //                                       // amounts = item.price;
+      //                                       // print("purchase Plan3 ==== $amounts");
+      //                                       // planI = item.id.toString();
+      //                                       // if(item.price.toString() == "0" || item.price == 0){
+      //                                       //   purchasePlan(userId.toString(),planI.toString(),"");
+      //                                       // }
+      //                                       // else{
+      //                                       //   checkOut(amounts);
+      //                                       // }
+      //                                     },
+      //                                     child: Text("Purchase"))
+      //                               ],
+      //                             )
+      //                           ],
+      //                         )),
+      //                   ),
+      //                 ))
+      //                     .toList(),
+      //               ),
+      //             ],
+      //           ),
+      //         );
+      //       } else if (snapshot.hasError) {
+      //         print("ERROR ==== ${snapshot.error}");
+      //         return Center(child: Icon(Icons.error_outline));
+      //       } else {
+      //         return Center(child: Image.asset("images/icons/loader.gif"));
+      //       }
+      //     }),
     );
   }
+  PlansModel? plansModel;
 
-  Future<PlansModel?> getPlans() async {
+  getPlans() async {
     var request = http.Request('GET', Uri.parse('${Apipath.BASH_URL}get_plans'));
-
     http.StreamedResponse response = await request.send();
-    print(request);
+    print("sfsfsfs${request}");
     if (response.statusCode == 200) {
       final str = await response.stream.bytesToString();
       print(str);
-      return PlansModel.fromJson(json.decode(str));
+        var finalResponse = PlansModel.fromJson(json.decode(str));
+        setState(() {
+          plansModel = finalResponse;
+        });
+      //return PlansModel.fromJson(json.decode(str));
     }
     else {
       return null;

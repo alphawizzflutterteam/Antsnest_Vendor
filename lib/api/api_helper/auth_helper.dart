@@ -56,7 +56,7 @@ class AuthApiHelper {
       GetProfileRequest request) async {
     var responsData = await ApiService.postAPI(
         path: Apipath.get_vebdor_profile, parameters: request.tojson());
-    print("profile api" + Apipath.get_vebdor_profile.toString());
+    print("profile api" + Apipath.get_vebdor_profile.toString() +  "and paramter ${request.tojson()}");
     var data = jsonDecode(responsData.body);
     print("checking api status ${data}");
     return GetProfileResponse.fromJson(data);

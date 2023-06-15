@@ -1,6 +1,6 @@
 /// response_code : "1"
 /// msg : "Membership plans"
-/// data : [{"id":"1","title":"FREE SUBSCRIPTION","description":"FREE SUBSCRIPTION","price":0,"time":"6","type":"2","image":"https://developmentalphawizz.com/antsnest/uploads/6360fcc3c653a.jpg","json":[{"is_true":0,"title":"Additional Discount"},{"is_true":0,"title":"Verified Status"},{"is_true":0,"title":"AN's Choice Lable"},{"is_true":0,"title":"Boosted Visibilty"},{"is_true":0,"title":"Social Media Promotion"},{"is_true":1,"title":"Dedicated Profile Manager"},{"is_true":0,"title":"Blog Post"},{"is_true":0,"title":"Moderate Reviews & Ratings"},{"is_true":1,"title":"Notification For Jobs"},{"is_true":0,"title":"Interview"},{"is_true":1,"title":"Job Recommedation"}],"created_at":"2022-09-28 08:15:01","updated_at":"2023-01-12 13:50:00","time_text":"6 Months","plan_type":"Monthly"},{"id":"2","title":"ANBASIC","description":"ANBASIC","price":3100,"time":"1","type":"3","image":"https://developmentalphawizz.com/antsnest/uploads/63343112edf05.jpeg","json":[{"is_true":1,"title":"10%"},{"is_true":0,"title":"Verified Status"},{"is_true":0,"title":"AN's Choice Lable"},{"is_true":0,"title":"Boosted Visibilty"},{"is_true":1,"title":"Social Media Promotion"},{"is_true":1,"title":"Dedicated Profile Manager"},{"is_true":0,"title":"Blog Post"},{"is_true":0,"title":"Moderate Reviews & Ratings"},{"is_true":1,"title":"Notification For Jobs"},{"is_true":0,"title":"Interview"},{"is_true":1,"title":"Job Recommedation"}],"created_at":"2022-09-28 05:41:06","updated_at":"2023-01-12 13:52:17","time_text":"1 Year","plan_type":"Yearly"},{"id":"3","title":"ANPLUS","description":"ANPLUS","price":7999,"time":"1","type":"3","image":"https://developmentalphawizz.com/antsnest/uploads/633431231d7ad.jpeg","json":[{"is_true":1,"title":"20%"},{"is_true":0,"title":"Verified Status"},{"is_true":0,"title":"AN's Choice Lable"},{"is_true":1,"title":"Boosted Visibilty"},{"is_true":1,"title":"Paid campaigns"},{"is_true":1,"title":"Dedicated Profile Manager"},{"is_true":1,"title":"Blog Post"},{"is_true":0,"title":"Moderate Reviews & Ratings"},{"is_true":1,"title":"Notification For Jobs"},{"is_true":1,"title":"Interview"},{"is_true":1,"title":"Job Recommedation"}],"created_at":"2022-09-28 05:41:06","updated_at":"2023-01-12 13:55:44","time_text":"1 Year","plan_type":"Yearly"}]
+/// data : [{"id":"1","title":"FREE SUBSCRIPTION","description":"FREE SUBSCRIPTION","price":0,"time":"6","type":"2","image":"https://developmentalphawizz.com/antsnest/uploads/6360fcc3c653a.jpg","json":[{"title":"Verified Status","is_true":0},{"title":"AN Choice Lable","is_true":0},{"title":"Boosted Visibilty","is_true":0},{"title":"Social Media Promotion","is_true":0},{"title":"Blog Post","is_true":0},{"title":"Moderate Reviews & Ratings","is_true":0},{"title":"Notification For Jobs","is_true":1},{"title":"Interview","is_true":0},{"title":"Job Recommedation","is_true":1}],"created_at":"2022-09-28 08:15:01","updated_at":"2023-06-07 06:59:45","time_text":"6 Months","plan_type":"Monthly"},{"id":"2","title":"ANBASIC","description":"ANBASIC","price":3100,"time":"1","type":"3","image":"https://developmentalphawizz.com/antsnest/uploads/63343112edf05.jpeg","json":[{"is_true":1,"title":"Verified Status"},{"is_true":0,"title":"AN Choice Lable"},{"is_true":0,"title":"Boosted Visibilty"},{"is_true":1,"title":"Social Media Promotion"},{"is_true":0,"title":"Blog Post"},{"is_true":0,"title":"Moderate Reviews & Ratings"},{"is_true":1,"title":"Notification For Jobs"},{"is_true":0,"title":"Interview"},{"is_true":1,"title":"Job Recommedation"}],"created_at":"2022-09-28 05:41:06","updated_at":"2023-02-13 12:38:32","time_text":"1 Year","plan_type":"Yearly"},{"id":"3","title":"ANPLUS","description":"ANPLUS","price":7999,"time":"1","type":"3","image":"https://developmentalphawizz.com/antsnest/uploads/633431231d7ad.jpeg","json":[{"is_true":1,"title":"Verified Status"},{"is_true":1,"title":"AN Choice Lable"},{"is_true":1,"title":"Boosted Visibilty"},{"is_true":1,"title":"Social Media Promotion"},{"is_true":1,"title":"Blog Post"},{"is_true":1,"title":"Moderate Reviews & Ratings"},{"is_true":1,"title":"Notification For Jobs"},{"is_true":1,"title":"Interview"},{"is_true":1,"title":"Job Recommedation"}],"created_at":"2022-09-28 05:41:06","updated_at":"2023-06-07 06:58:23","time_text":"1 Year","plan_type":"Yearly"}]
 
 class PlansModel {
   PlansModel({
@@ -55,9 +55,9 @@ PlansModel copyWith({  String? responseCode,
 /// time : "6"
 /// type : "2"
 /// image : "https://developmentalphawizz.com/antsnest/uploads/6360fcc3c653a.jpg"
-/// json : [{"is_true":0,"title":"Additional Discount"},{"is_true":0,"title":"Verified Status"},{"is_true":0,"title":"AN's Choice Lable"},{"is_true":0,"title":"Boosted Visibilty"},{"is_true":0,"title":"Social Media Promotion"},{"is_true":1,"title":"Dedicated Profile Manager"},{"is_true":0,"title":"Blog Post"},{"is_true":0,"title":"Moderate Reviews & Ratings"},{"is_true":1,"title":"Notification For Jobs"},{"is_true":0,"title":"Interview"},{"is_true":1,"title":"Job Recommedation"}]
+/// json : [{"title":"Verified Status","is_true":0},{"title":"AN Choice Lable","is_true":0},{"title":"Boosted Visibilty","is_true":0},{"title":"Social Media Promotion","is_true":0},{"title":"Blog Post","is_true":0},{"title":"Moderate Reviews & Ratings","is_true":0},{"title":"Notification For Jobs","is_true":1},{"title":"Interview","is_true":0},{"title":"Job Recommedation","is_true":1}]
 /// created_at : "2022-09-28 08:15:01"
-/// updated_at : "2023-01-12 13:50:00"
+/// updated_at : "2023-06-07 06:59:45"
 /// time_text : "6 Months"
 /// plan_type : "Monthly"
 
@@ -179,35 +179,35 @@ Data copyWith({  String? id,
 
 }
 
+/// title : "Verified Status"
 /// is_true : 0
-/// title : "Additional Discount"
 
 class Json {
   Json({
-      num? isTrue, 
-      String? title,}){
-    _isTrue = isTrue;
+      String? title, 
+      num? isTrue,}){
     _title = title;
+    _isTrue = isTrue;
 }
 
   Json.fromJson(dynamic json) {
-    _isTrue = json['is_true'];
     _title = json['title'];
+    _isTrue = json['is_true'];
   }
-  num? _isTrue;
   String? _title;
-Json copyWith({  num? isTrue,
-  String? title,
-}) => Json(  isTrue: isTrue ?? _isTrue,
-  title: title ?? _title,
+  num? _isTrue;
+Json copyWith({  String? title,
+  num? isTrue,
+}) => Json(  title: title ?? _title,
+  isTrue: isTrue ?? _isTrue,
 );
-  num? get isTrue => _isTrue;
   String? get title => _title;
+  num? get isTrue => _isTrue;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['is_true'] = _isTrue;
     map['title'] = _title;
+    map['is_true'] = _isTrue;
     return map;
   }
 

@@ -84,7 +84,7 @@ class UtilityHlepar {
   // for loding img
   static convertetIMG(img, {height, width, fit}) {
     return CachedNetworkImage(
-      imageUrl: img ??
+      imageUrl: img.toString() ??
           "https://kinsta.com/wp-content/uploads/2014/04/free-images-for-wordpress-1024x512.png",
       height: height,
       width: height,

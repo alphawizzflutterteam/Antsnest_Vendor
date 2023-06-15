@@ -1,10 +1,7 @@
-import 'dart:convert';
 /// response_code : "1"
 /// msg : "My Bookings"
-/// data : [{"email":"shivam15alphawizz@gmail.com","mobile":"8319040004","username":"Shivam 12 Kanathe","id":"277","date":"2022-11-04","slot":"6:02 AM","user_id":"31","res_id":"198","size":"ghh","status":"Confirm","a_status":"2","reason":null,"is_paid":"0","otp":"4125","amount":"20","txn_id":"","p_date":"0000-00-00","address":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","address_id":"33","payment_type":"","created_at":"2022-11-04 05:32:59","subtotal":"20.00","discount":"100.00","addons":"10000.00","addon_service":null,"total":"10020.00","price":"20","res_name":"Service Here","res_desc":"dummy description here"},{"email":"shivam15alphawizz@gmail.com","mobile":"8319040004","username":"Shivam 12 Kanathe","id":"276","date":"2022-11-04","slot":"5:55 AM","user_id":"31","res_id":"197","size":"hhh","status":"Confirm","a_status":"2","reason":null,"is_paid":"0","otp":"4357","amount":"3","txn_id":"","p_date":"0000-00-00","address":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","address_id":"33","payment_type":"","created_at":"2022-11-04 05:25:46","subtotal":"3.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"0.00","price":"3","res_name":"dummy service ","res_desc":"dummy"},{"email":"shivam15alphawizz@gmail.com","mobile":"8319040004","username":"Shivam 12 Kanathe","id":"275","date":"2022-11-04","slot":"5:53 AM","user_id":"31","res_id":"198","size":"gg","status":"Pending","a_status":"1","reason":null,"is_paid":"0","otp":"4117","amount":"20","txn_id":"","p_date":"0000-00-00","address":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","address_id":"33","payment_type":"","created_at":"2022-11-04 05:24:24","subtotal":"20.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"0.00","price":"20","res_name":"Service Here","res_desc":"dummy description here"},{"email":"shivam15alphawizz@gmail.com","mobile":"8319040004","username":"Shivam 12 Kanathe","id":"274","date":"2022-11-04","slot":"5:53 AM","user_id":"31","res_id":"198","size":"gg","status":"Cancelled by vendor","a_status":"4","reason":"no time","is_paid":"0","otp":"1370","amount":"20","txn_id":"","p_date":"0000-00-00","address":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","address_id":"33","payment_type":"","created_at":"2022-11-04 05:24:15","subtotal":"20.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"0.00","price":"20","res_name":"Service Here","res_desc":"dummy description here"},{"email":"shivam15alphawizz@gmail.com","mobile":"8319040004","username":"Shivam 12 Kanathe","id":"233","date":"2022-10-12","slot":"1:33 AM","user_id":"31","res_id":"198","size":"fff","status":"Confirm","a_status":"2","reason":null,"is_paid":"0","otp":"2841","amount":"5000","txn_id":"","p_date":"2022-10-12","address":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 201","address_id":"34","payment_type":"","created_at":"2022-10-12 01:03:35","subtotal":"0.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"0.00","price":"20","res_name":"Service Here","res_desc":"dummy description here"},{"email":"shivam15alphawizz@gmail.com","mobile":"8319040004","username":"Shivam 12 Kanathe","id":"232","date":"2022-10-12","slot":"1:19 AM","user_id":"31","res_id":"198","size":"jjjjj","status":"Confirm","a_status":"2","reason":null,"is_paid":"0","otp":"2599","amount":"5000","txn_id":"","p_date":"2022-10-12","address":"G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101","address_id":"33","payment_type":"","created_at":"2022-10-12 00:49:51","subtotal":"0.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"0.00","price":"20","res_name":"Service Here","res_desc":"dummy description here"}]
+/// data : [{"email":"shivam15alphawizz@mailinator.com","mobile":"8319040004","username":"Shiva Sharma","id":"221","date":"2023-06-07","slot":" 05:00 PM","user_id":"31","res_id":"136","size":" ggh","status":"Confirm","a_status":"2","reason":null,"is_paid":"0","otp":"2196","amount":"300","txn_id":"","p_date":null,"address":" Vijay Nagar, Indore, Madhya Pradesh 452010, India, 45","address_id":"82","payment_type":"","created_at":"2023-06-06 05:11:44","subtotal":"300.00","tax_amt":"30.00","tax":"0.00","discount":"0.00","addons":"0.00","addon_service":"","total":"330.00","updated_at":"2023-06-06 13:20:02","price":"300","res_name":"Fashion Store","res_desc":"We are providing good Service."},{"email":"shivam15alphawizz@mailinator.com","mobile":"8319040004","username":"Shiva Sharma","id":"220","date":"2023-06-07","slot":" 05:00 PM","user_id":"31","res_id":"136","size":" ggh","status":"Pending","a_status":"1","reason":null,"is_paid":"0","otp":"2698","amount":"300","txn_id":"","p_date":null,"address":" Vijay Nagar, Indore, Madhya Pradesh 452010, India, 45","address_id":"82","payment_type":"","created_at":"2023-06-06 05:11:09","subtotal":"300.00","tax_amt":"30.00","tax":"0.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"330.00","updated_at":"2023-06-06 05:11:09","price":"300","res_name":"Fashion Store","res_desc":"We are providing good Service."},{"email":"shivam15alphawizz@mailinator.com","mobile":"8319040004","username":"Shiva Sharma","id":"219","date":"2023-06-07","slot":" 05:00 PM","user_id":"31","res_id":"130","size":" vg","status":"Pending","a_status":"1","reason":null,"is_paid":"0","otp":"1749","amount":"900","txn_id":"","p_date":null,"address":" Vijay Nagar, Indore, Madhya Pradesh 452010, India, 45","address_id":"82","payment_type":"","created_at":"2023-06-05 13:34:34","subtotal":"900.00","tax_amt":"90.00","tax":"0.00","discount":"0.00","addons":"0.00","addon_service":null,"total":"990.00","updated_at":"2023-06-06 05:12:24","price":"900","res_name":"WEDDING","res_desc":"Create timeless memories without the hassle. We’ll capture the moments you never want..."}]
 
-VendorOrderModel vendorOrderModelFromJson(String str) => VendorOrderModel.fromJson(json.decode(str));
-String vendorOrderModelToJson(VendorOrderModel data) => json.encode(data.toJson());
 class VendorOrderModel {
   VendorOrderModel({
       String? responseCode, 
@@ -51,38 +48,39 @@ VendorOrderModel copyWith({  String? responseCode,
 
 }
 
-/// email : "shivam15alphawizz@gmail.com"
+/// email : "shivam15alphawizz@mailinator.com"
 /// mobile : "8319040004"
-/// username : "Shivam 12 Kanathe"
-/// id : "277"
-/// date : "2022-11-04"
-/// slot : "6:02 AM"
+/// username : "Shiva Sharma"
+/// id : "221"
+/// date : "2023-06-07"
+/// slot : " 05:00 PM"
 /// user_id : "31"
-/// res_id : "198"
-/// size : "ghh"
+/// res_id : "136"
+/// size : " ggh"
 /// status : "Confirm"
 /// a_status : "2"
 /// reason : null
 /// is_paid : "0"
-/// otp : "4125"
-/// amount : "20"
+/// otp : "2196"
+/// amount : "300"
 /// txn_id : ""
-/// p_date : "0000-00-00"
-/// address : "G2, Plot No 83, Scheme No 53, near Medanta Hospital, Vijay Nagar, Indore, Madhya Pradesh 452010, India, 101"
-/// address_id : "33"
+/// p_date : null
+/// address : " Vijay Nagar, Indore, Madhya Pradesh 452010, India, 45"
+/// address_id : "82"
 /// payment_type : ""
-/// created_at : "2022-11-04 05:32:59"
-/// subtotal : "20.00"
-/// discount : "100.00"
-/// addons : "10000.00"
-/// addon_service : null
-/// total : "10020.00"
-/// price : "20"
-/// res_name : "Service Here"
-/// res_desc : "dummy description here"
+/// created_at : "2023-06-06 05:11:44"
+/// subtotal : "300.00"
+/// tax_amt : "30.00"
+/// tax : "0.00"
+/// discount : "0.00"
+/// addons : "0.00"
+/// addon_service : ""
+/// total : "330.00"
+/// updated_at : "2023-06-06 13:20:02"
+/// price : "300"
+/// res_name : "Fashion Store"
+/// res_desc : "We are providing good Service."
 
-Data dataFromJson(String str) => Data.fromJson(json.decode(str));
-String dataToJson(Data data) => json.encode(data.toJson());
 class Data {
   Data({
       String? email, 
@@ -101,16 +99,19 @@ class Data {
       String? otp, 
       String? amount, 
       String? txnId, 
-      String? pDate, 
+      dynamic pDate, 
       String? address, 
       String? addressId, 
       String? paymentType, 
       String? createdAt, 
       String? subtotal, 
+      String? taxAmt, 
+      String? tax, 
       String? discount, 
       String? addons, 
-      dynamic addonService, 
+      String? addonService, 
       String? total, 
+      String? updatedAt, 
       String? price, 
       String? resName, 
       String? resDesc,}){
@@ -136,10 +137,13 @@ class Data {
     _paymentType = paymentType;
     _createdAt = createdAt;
     _subtotal = subtotal;
+    _taxAmt = taxAmt;
+    _tax = tax;
     _discount = discount;
     _addons = addons;
     _addonService = addonService;
     _total = total;
+    _updatedAt = updatedAt;
     _price = price;
     _resName = resName;
     _resDesc = resDesc;
@@ -168,10 +172,13 @@ class Data {
     _paymentType = json['payment_type'];
     _createdAt = json['created_at'];
     _subtotal = json['subtotal'];
+    _taxAmt = json['tax_amt'];
+    _tax = json['tax'];
     _discount = json['discount'];
     _addons = json['addons'];
     _addonService = json['addon_service'];
     _total = json['total'];
+    _updatedAt = json['updated_at'];
     _price = json['price'];
     _resName = json['res_name'];
     _resDesc = json['res_desc'];
@@ -192,16 +199,19 @@ class Data {
   String? _otp;
   String? _amount;
   String? _txnId;
-  String? _pDate;
+  dynamic _pDate;
   String? _address;
   String? _addressId;
   String? _paymentType;
   String? _createdAt;
   String? _subtotal;
+  String? _taxAmt;
+  String? _tax;
   String? _discount;
   String? _addons;
-  dynamic _addonService;
+  String? _addonService;
   String? _total;
+  String? _updatedAt;
   String? _price;
   String? _resName;
   String? _resDesc;
@@ -221,16 +231,19 @@ Data copyWith({  String? email,
   String? otp,
   String? amount,
   String? txnId,
-  String? pDate,
+  dynamic pDate,
   String? address,
   String? addressId,
   String? paymentType,
   String? createdAt,
   String? subtotal,
+  String? taxAmt,
+  String? tax,
   String? discount,
   String? addons,
-  dynamic addonService,
+  String? addonService,
   String? total,
+  String? updatedAt,
   String? price,
   String? resName,
   String? resDesc,
@@ -256,10 +269,13 @@ Data copyWith({  String? email,
   paymentType: paymentType ?? _paymentType,
   createdAt: createdAt ?? _createdAt,
   subtotal: subtotal ?? _subtotal,
+  taxAmt: taxAmt ?? _taxAmt,
+  tax: tax ?? _tax,
   discount: discount ?? _discount,
   addons: addons ?? _addons,
   addonService: addonService ?? _addonService,
   total: total ?? _total,
+  updatedAt: updatedAt ?? _updatedAt,
   price: price ?? _price,
   resName: resName ?? _resName,
   resDesc: resDesc ?? _resDesc,
@@ -280,16 +296,19 @@ Data copyWith({  String? email,
   String? get otp => _otp;
   String? get amount => _amount;
   String? get txnId => _txnId;
-  String? get pDate => _pDate;
+  dynamic get pDate => _pDate;
   String? get address => _address;
   String? get addressId => _addressId;
   String? get paymentType => _paymentType;
   String? get createdAt => _createdAt;
   String? get subtotal => _subtotal;
+  String? get taxAmt => _taxAmt;
+  String? get tax => _tax;
   String? get discount => _discount;
   String? get addons => _addons;
-  dynamic get addonService => _addonService;
+  String? get addonService => _addonService;
   String? get total => _total;
+  String? get updatedAt => _updatedAt;
   String? get price => _price;
   String? get resName => _resName;
   String? get resDesc => _resDesc;
@@ -318,10 +337,13 @@ Data copyWith({  String? email,
     map['payment_type'] = _paymentType;
     map['created_at'] = _createdAt;
     map['subtotal'] = _subtotal;
+    map['tax_amt'] = _taxAmt;
+    map['tax'] = _tax;
     map['discount'] = _discount;
     map['addons'] = _addons;
     map['addon_service'] = _addonService;
     map['total'] = _total;
+    map['updated_at'] = _updatedAt;
     map['price'] = _price;
     map['res_name'] = _resName;
     map['res_desc'] = _resDesc;

@@ -27,6 +27,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../modal/VendorOrderModel.dart';
 import 'chat_page.dart';
 
@@ -87,7 +88,10 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
       final jsonResponse = json.decode(finalResult);
       print("final response here ${jsonResponse}");
       setState(() {
-        Fluttertoast.showToast(msg: "${jsonResponse['message']}");
+        Fluttertoast.showToast(msg: "${jsonResponse['message']} and OTP is ${jsonResponse['otp']}");
+        //setState(() {
+          isStart = false;
+
       });
     }
     else {
@@ -106,6 +110,7 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
       'otp': otpValue.text,
       'status': '${status}'
     });
+    print("sfsfsfsfsfsf ${request.fields}");
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -116,6 +121,10 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
       setState(() {
         Fluttertoast.showToast(msg: "${jsonResponse['message']}");
       });
+
+      if(status == "5"){
+        Navigator.pop(context);
+      }
     }
     else {
       print(response.reasonPhrase);
@@ -218,7 +227,7 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                                 width: 5,
                               ),
                               text(
-                                widget.orderResponse.data![widget.i].price
+                                widget.orderResponse.data![widget.i].total
                                     .toString(),
                                 textColor: AppColor().colorPrimaryDark(),
                                 fontSize: 10.sp,
@@ -280,7 +289,7 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                         Row(
                           mainAxisAlignment:MainAxisAlignment.center,
                           children: [
-                            InkWell(
+                            widget.orderResponse.data![widget.i].status == "Complete" ? SizedBox() :  InkWell(
                               onTap:(){
                                 sendOtp(widget.orderResponse.data![widget.i].id.toString());
                                 setState(() {
@@ -411,36 +420,36 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                                   ],
                                 ),
                               ),
-                              Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    text(
-                                      "Customer Contact No.",
-                                      textColor: Color(0xff000000),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontBold,
-                                    ),
-                                    SizedBox(
-                                      height: 1.02.h,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 30.0),
-                                      child: text(
-                                        "+91 " +
-                                            UtilityHlepar.convertNA(widget
-                                                .orderResponse
-                                                .data![widget.i]
-                                                .mobile!),
-                                        textColor: Color(0xff757575),
-                                        fontSize: 10.sp,
-                                        fontFamily: fontSemibold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                             // Container(
+                              //   child: Column(
+                              //     mainAxisAlignment: MainAxisAlignment.start,
+                              //     crossAxisAlignment: CrossAxisAlignment.start,
+                              //     children: [
+                              //       text(
+                              //         "Customer Contact No.",
+                              //         textColor: Color(0xff000000),
+                              //         fontSize: 10.sp,
+                              //         fontFamily: fontBold,
+                              //       ),
+                              //       SizedBox(
+                              //         height: 1.02.h,
+                              //       ),
+                              //       Padding(
+                              //         padding: const EdgeInsets.only(left: 30.0),
+                              //         child: text(
+                              //           "+91 " +
+                              //               UtilityHlepar.convertNA(widget
+                              //                   .orderResponse
+                              //                   .data![widget.i]
+                              //                   .mobile!),
+                              //           textColor: Color(0xff757575),
+                              //           fontSize: 10.sp,
+                              //           fontFamily: fontSemibold,
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -487,9 +496,11 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                     height: 1.52.h,
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 8.33.w, right: 8.33.w),
-                    padding: EdgeInsets.only(
-                        left: 2.91.w, right: 2.91.w, top: 2.67.h),
+                    margin: EdgeInsets.symmetric(horizontal: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+                   // margin: EdgeInsets.only(left: 8.33.w, right: 8.33.w),
+                   //  padding: EdgeInsets.only(
+                   //      left: 2.91.w, right: 2.91.w, top: 2.67.h),
                    // height: 12.32.h,
                     decoration: boxDecoration(
                       showShadow: true,
@@ -498,286 +509,232 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                     ),
                     child: Column(
                       children: [
-                        Row(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    text(
-                                      "Service Type",
-                                      textColor: Color(0xff000000),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontBold,
-                                    ),
-
-                                    // text(
-                                    //   widget.orderResponse.data![widget.i].resName!,
-                                    //   textColor: Color(0xff757575),
-                                    //   fontSize: 9.sp,
-                                    //   fontFamily: fontSemibold,
-                                    // ),
-                                    /*Container(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          text(
-                                            "Duration",
-                                            textColor: Color(0xff000000),
-                                            fontSize: 10.sp,
-                                            fontFamily: fontBold,
-                                          ),
-                                          SizedBox(
-                                            height: 1.02.h,
-                                          ),
-                                          text(
-                                            widget.orderResponse.data![widget.i].slot!
-                                              // +
-                                                // " " +
-                                                // UtilityHlepar.convertNA(widget
-                                                //     .orderResponse
-                                                //     .booking![widget.i]
-                                                //     .service!
-                                                //     .priceUnit!
-                                                // )
-                                              ,
-                                            textColor: Color(0xff757575),
-                                            fontSize: 10.sp,
-                                            fontFamily: fontSemibold,
-                                          ),
-                                        ],
-                                      ),
-                                    ),*/
-                                  ],
+                                text(
+                                  "Service Type",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    text(
-                                      "Price ",
-                                      textColor: Color(0xff000000),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontBold,
-                                    ),
-                                    // text(
-                                    //   AppStrings.currencySymbols +
-                                    //       " " +
-                                    //       UtilityHlepar.convertNA(widget
-                                    //           .orderResponse
-                                    //           .data![widget.i]
-                                    //           .price),
-                                    //   textColor: Color(0xffFD531F),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontSemibold,
-                                    // ),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    text(
-                                      "Addon Price",
-                                      textColor: Color(0xff000000),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontBold,
-                                    ),
-
-                                    // text(
-                                    //   AppStrings.currencySymbols +
-                                    //       " " +
-                                    //       UtilityHlepar.convertNA(widget
-                                    //           .orderResponse
-                                    //           .data![widget.i]
-                                    //           .addons),
-                                    //   textColor: Color(0xffFD531F),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontSemibold,
-                                    // ),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    text(
-                                      "Discount Price",
-                                      textColor: Color(0xff000000),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontBold,
-                                    ),
-
-                                    // text(
-                                    //   AppStrings.currencySymbols +
-                                    //       " " +
-                                    //       UtilityHlepar.convertNA(widget
-                                    //           .orderResponse
-                                    //           .data![widget.i]
-                                    //           .addons),
-                                    //   textColor: Color(0xffFD531F),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontSemibold,
-                                    // ),
-                                  ],
+                                text(
+                                  AppStrings.currencySymbols +
+                                      " " +
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .price),
+                                  textColor: Color(0xffFD531F),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontSemibold,
                                 ),
                               ],
                             ),
-                            Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // text(
-                                    //   "Service Type",
-                                    //   textColor: Color(0xff000000),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontBold,
-                                    // ),
-                                    // SizedBox(
-                                    //   height: 1.02.h,
-                                    // ),
-                                    text(
-                                      widget.orderResponse.data![widget.i].resName!,
-                                      textColor: Color(0xff757575),
-                                      fontSize: 9.sp,
-                                      fontFamily: fontSemibold,
-                                    ),
-                                    /*Container(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          text(
-                                            "Duration",
-                                            textColor: Color(0xff000000),
-                                            fontSize: 10.sp,
-                                            fontFamily: fontBold,
-                                          ),
-                                          SizedBox(
-                                            height: 1.02.h,
-                                          ),
-                                          text(
-                                            widget.orderResponse.data![widget.i].slot!
-                                              // +
-                                                // " " +
-                                                // UtilityHlepar.convertNA(widget
-                                                //     .orderResponse
-                                                //     .booking![widget.i]
-                                                //     .service!
-                                                //     .priceUnit!
-                                                // )
-                                              ,
-                                            textColor: Color(0xff757575),
-                                            fontSize: 10.sp,
-                                            fontFamily: fontSemibold,
-                                          ),
-                                        ],
-                                      ),
-                                    ),*/
-                                  ],
+                                text(
+                                  "SubTotal ",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // text(
-                                    //   "Price ",
-                                    //   textColor: Color(0xff000000),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontBold,
-                                    // ),
-                                    // SizedBox(
-                                    //   height: 1.02.h,
-                                    // ),
-                                    text(
-                                      AppStrings.currencySymbols +
-                                          " " +
-                                          UtilityHlepar.convertNA(widget
-                                              .orderResponse
-                                              .data![widget.i]
-                                              .price),
-                                      textColor: Color(0xffFD531F),
+                                text(
+                                  AppStrings.currencySymbols +
+                                      " " +
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .price),
+                                  textColor: Color(0xffFD531F),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontSemibold,
+                                ),
+
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  "Addon Price",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
+                                ),
+                                text(
+                                  AppStrings.currencySymbols +
+                                      " " +
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .addons),
+                                  textColor: Color(0xffFD531F),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontSemibold,
+                                ),
+                                // text(
+                                //   AppStrings.currencySymbols +
+                                //       " " +
+                                //       UtilityHlepar.convertNA(widget
+                                //           .orderResponse
+                                //           .data![widget.i]
+                                //           .addons),
+                                //   textColor: Color(0xffFD531F),
+                                //   fontSize: 10.sp,
+                                //   fontFamily: fontSemibold,
+                                // ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  "Discount Price",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
+                                ),
+                                text(
+                                  AppStrings.currencySymbols +
+                                      " " +
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .discount),
+                                  textColor: Color(0xffFD531F),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontSemibold,
+                                ),
+
+                                // text(
+                                //   AppStrings.currencySymbols +
+                                //       " " +
+                                //       UtilityHlepar.convertNA(widget
+                                //           .orderResponse
+                                //           .data![widget.i]
+                                //           .addons),
+                                //   textColor: Color(0xffFD531F),
+                                //   fontSize: 10.sp,
+                                //   fontFamily: fontSemibold,
+                                // ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  "Tax Amount",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
+                                ),
+                                text(
+                                  AppStrings.currencySymbols +
+                                      " " +
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .taxAmt),
+                                  textColor: Color(0xffFD531F),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontSemibold,
+                                ),
+                              ],
+
+                                // text(
+                                //   AppStrings.currencySymbols +
+                                //       " " +
+                                //       UtilityHlepar.convertNA(widget
+                                //           .orderResponse
+                                //           .data![widget.i]
+                                //           .addons),
+                                //   textColor: Color(0xffFD531F),
+                                //   fontSize: 10.sp,
+                                //   fontFamily: fontSemibold,
+                                // ),
+
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  "Final Total",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
+                                ),
+                                text(
+                                  AppStrings.currencySymbols +
+                                      " " +
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .total),
+                                  textColor: Color(0xffFD531F),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontSemibold,
+                                ),
+                                // text(
+                                //   AppStrings.currencySymbols +
+                                //       " " +
+                                //       UtilityHlepar.convertNA(widget
+                                //           .orderResponse
+                                //           .data![widget.i]
+                                //           .addons),
+                                //   textColor: Color(0xffFD531F),
+                                //   fontSize: 10.sp,
+                                //   fontFamily: fontSemibold,
+                                // ),
+                              ],
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                text(
+                                  "Note",
+                                  textColor: Color(0xff000000),
+                                  fontSize: 10.sp,
+                                  fontFamily: fontBold,
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  width: MediaQuery.of(context).size.width/1.5,
+                                  child: text(
+                                      UtilityHlepar.convertNA(widget
+                                          .orderResponse
+                                          .data![widget.i]
+                                          .size),
+                                      textColor: Colors.black,
                                       fontSize: 10.sp,
                                       fontFamily: fontSemibold,
-                                    ),
-                                  ],
+                                      maxLine: 2
+                                  ),
                                 ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // text(
-                                    //   "Addon Price",
-                                    //   textColor: Color(0xff000000),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontBold,
-                                    // ),
-                                    // SizedBox(
-                                    //   height: 1.02.h,
-                                    // ),
-                                    text(
-                                      AppStrings.currencySymbols +
-                                          " " +
-                                          UtilityHlepar.convertNA(widget
-                                              .orderResponse
-                                              .data![widget.i]
-                                              .addons),
-                                      textColor: Color(0xffFD531F),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontSemibold,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // text(
-                                    //   "Addon Price",
-                                    //   textColor: Color(0xff000000),
-                                    //   fontSize: 10.sp,
-                                    //   fontFamily: fontBold,
-                                    // ),
-                                    // SizedBox(
-                                    //   height: 1.02.h,
-                                    // ),
-                                    text(
-                                      AppStrings.currencySymbols +
-                                          " " +
-                                          UtilityHlepar.convertNA(widget
-                                              .orderResponse
-                                              .data![widget.i]
-                                              .discount),
-                                      textColor: Color(0xffFD531F),
-                                      fontSize: 10.sp,
-                                      fontFamily: fontSemibold,
-                                    ),
-                                  ],
-                                ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(top: 5.0),
-                                //   child: Center(
-                                //     child: Text(
-                                //       "Booking Status: ${widget.orderResponse.data![widget.i].status!}",
-                                //       style: TextStyle(
-                                //         color: Color(0xff13CE3F),
-                                //         fontSize: 10.sp,
-                                //         fontFamily: fontSemibold,
-                                //       ),),
-                                //
-                                //   ),
-                                // )
+
+                                // text(
+                                //   AppStrings.currencySymbols +
+                                //       " " +
+                                //       UtilityHlepar.convertNA(widget
+                                //           .orderResponse
+                                //           .data![widget.i]
+                                //           .addons),
+                                //   textColor: Color(0xffFD531F),
+                                //   fontSize: 10.sp,
+                                //   fontFamily: fontSemibold,
+                                // ),
                               ],
                             ),
                           ],
@@ -786,7 +743,7 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                           padding: const EdgeInsets.only(top: 5.0),
                           child: Center(
                             child: Text(
-                              "Booking Status: ${widget.orderResponse.data![widget.i].status!}",
+                              "Booking Status: ${widget.orderResponse.data![widget.i].status.toString()}",
                               style: TextStyle(
                                 color: Color(0xff13CE3F),
                                 fontSize: 10.sp,
@@ -947,7 +904,15 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                     padding: EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       children: [
-                        InkWell(
+                        widget.orderResponse.data![widget.i].status == "Complete" ? MaterialButton(onPressed: ()async{
+                          final Uri url = Uri.parse( '${Apipath.BASH_URL}get_invoice/${widget.orderResponse.data![widget.i].id}');
+                          print("checking url here ${url}");
+                          if (await canLaunch(url.toString())) {
+                            await launch(url.toString(),);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },child: Text("Download Invoice",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 16),),color:AppColor.PrimaryDark,) : InkWell(
                           onTap:(){
                             sendOtp(widget.orderResponse.data![widget.i].id.toString());
                             setState(() {
@@ -967,7 +932,7 @@ class _ServiceScreenDetailsState extends State<ServiceScreenDetails> {
                         ),
                         SizedBox(height: 10,),
                         isCompleted == true ?    TextField(
-                          controller: startOtpController,
+                          controller: completeOtpController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               hintText: "Enter OTP",

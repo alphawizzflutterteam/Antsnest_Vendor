@@ -12,6 +12,7 @@ import 'package:fixerking/modal/request/i_am_online_request.dart';
 import 'package:fixerking/modal/response/accept_reject_response.dart';
 import 'package:fixerking/modal/response/get_new_order_response.dart';
 import 'package:fixerking/modal/response/i_am_online_response.dart';
+import 'package:fixerking/screen/chat_page.dart';
 import 'package:fixerking/screen/service_details_screen.dart';
 import 'package:fixerking/token/app_token_data.dart';
 import 'package:fixerking/utility_widget/shimmer_loding_view/loding_home_page.dart';
@@ -66,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         http.MultipartRequest('POST', Uri.parse(BaseUrl + 'view_latest_post'));
     request.fields.addAll({'user_id': '${vendorId.toString()}'});
     print("ok ${vendorId.toString()}");
+    print("mmmmmmm ${request} and ${request.fields}");
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -450,7 +452,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                   fontFamily: fontRegular,
                                                                                 ),
                                                                                 text(
-                                                                                  model.data![i].resName.toString(),
+                                                                                  "${model.data![i].resName.toString()}",
                                                                                   textColor: Color(0xff191919),
                                                                                   fontSize: 10.sp,
                                                                                   fontFamily: fontMedium,
@@ -469,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               crossAxisAlignment: CrossAxisAlignment.start,
                                                                               children: [
                                                                                 text(
-                                                                                  AppStrings.currencySymbols + " " + model.data![i].price.toString(),
+                                                                                  "${AppStrings.currencySymbols + " " + model.data![i].total.toString()}",
                                                                                   textColor: AppColor().colorPrimaryDark(),
                                                                                   fontSize: 10.sp,
                                                                                   fontFamily: fontMedium,
@@ -566,10 +568,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           60.w,
                                                                       child:
                                                                           Text(
-                                                                        model
-                                                                            .data![i]
-                                                                            .address
-                                                                            .toString(),
+                                                                        "${model.data![i].address.toString()}",
                                                                         softWrap:
                                                                             true,
                                                                         overflow:
@@ -873,6 +872,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     ],
                                                                   ),
                                                                 ),
+                                                                    SizedBox(height: 10,),
+                                                    latestPostModel!.data![i].acceptedBy !=null ?  MaterialButton(onPressed: (){
+                                                        Navigator.push(context,MaterialPageRoute(builder: (context)=> ChatPage(
+                                                          providerName: latestPostModel!.data![i].username,
+                                                          bookingId: latestPostModel!.data![i].id.toString(),
+                                                          userid: latestPostModel!.data![i].userId.toString(),
+                                                          fromPost: true,
+                                                        )));
+                                                      },child: Text("Chat with User",style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.w500)),color: AppColor.PrimaryDark,) : SizedBox(),
+                                                        SizedBox(height: 10,),
                                                     ],
                                                   ),
                                                 ),
